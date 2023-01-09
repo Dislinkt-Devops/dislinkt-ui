@@ -1,14 +1,34 @@
 <div class="card-body">
-    <form class="form-group">
-        <input class="form-control lg mb-2" type="text" placeholder="Email" />
-        <input class="form-control lg mb-2" type="password" placeholder="Password" />
-        <button type="button" class="btn btn-primary w-100">Log In</button>
+    <form (ngSubmit)="onSubmit()" class="form-group">
+        <div class="form-group">
+            <input class="form-control lg mb-2" type="text" placeholder="Username" [formControl]="username" required
+                [ngClass]="{ 'is-invalid': username.touched && username.errors }" />
+            <div class="invalid-feedback" *ngIf="username.touched && username.errors">
+                Please enter a username.
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control lg mb-2" [type]="showPassword ? 'text' : 'password'" placeholder="Password"
+                    [formControl]="password" required
+                    [ngClass]="{ 'is-invalid': password.touched && password.errors }" />
+                <div class="eye">
+                    <i alt="show" class="fa fa-eye" (click)="showPassword = !showPassword"
+                        [class.hide]="showPassword"></i>
+                    <i alt="hide" class="fa fa-eye-slash" (click)="showPassword = !showPassword"
+                        [class.hide]="!showPassword"></i>
+                </div>
+                <div class="invalid-feedback" *ngIf="password.touched && password.errors">
+                    Please enter a password.
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary w-100">Log In</button>
         <hr />
         <div class="text-center">
             <a routerLink="/auth/register">
-                <button type="button" class="btn btn-default w-75">
-                    Join now
-                </button>
+                <button type="button" class="btn btn-default w-75">Join now</button>
             </a>
         </div>
     </form>

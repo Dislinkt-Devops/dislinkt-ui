@@ -8,6 +8,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { HomeLayoutComponent } from './layout/home-layout/home-layout.component';
+import { environment } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,12 @@ import { HomeLayoutComponent } from './layout/home-layout/home-layout.component'
     AuthModule,
     CoreModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: "BASE_API_URL", useValue: environment.apiUrl }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
