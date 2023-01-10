@@ -2,7 +2,44 @@ hr {
     border-color: #344675;
 }
 
+i {
+    margin-top: 16px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .lg {
     height: 50px;
     font-size: 16px;
+}
+
+.hide {
+    display: none;
+}
+
+.eye {
+    position: absolute;
+    margin-left: calc(100% - 40px);
+    z-index: 100;
+}
+
+.input-group input {
+    padding-right: 50px !important;
+}
+
+.input-group .form-control:first-child {
+    border-right: 1px solid #2b3553;
+}
+
+.input-group .form-control:first-child:focus {
+    border-color: #1d8cf8;
+}
+
+.input-group .form-control:first-child.is-invalid {
+    border-color: #ff8d72;
+}
+
+.input-group > .form-control:not(:last-child) {
+    border-top-right-radius: 0.4285rem !important;;
+    border-bottom-right-radius: 0.4285rem !important;;
 }

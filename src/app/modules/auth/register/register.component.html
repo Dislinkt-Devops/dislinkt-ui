@@ -1,10 +1,56 @@
 <div class="card-body">
-    <form class="form-group">
-        <input class="form-control lg mb-2" type="text" placeholder="Username" />
-        <input class="form-control lg mb-2" type="text" placeholder="Email" />
-        <input class="form-control lg mb-2" type="password" placeholder="New password" />
-        <input class="form-control lg mb-2" type="password" placeholder="Confirm password" />
-        <button type="button" class="btn btn-primary w-100">Join</button>
+    <form (ngSubmit)="onSubmit()" class="form-group">
+        <div class="form-group">
+            <input class="form-control lg mb-2" type="text" placeholder="Username" [formControl]="username" required
+                [ngClass]="{ 'is-invalid': username.touched && username.errors }" />
+            <div class="invalid-feedback" *ngIf="username.touched && username.errors">
+                <div *ngIf="username.errors['required']">Please enter a username.</div>
+                <div *ngIf="username.errors['minlength']">Username must have at least 4 characters.</div>
+                <div *ngIf="username.errors['maxlength']">Username must be under 20 characters.</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control lg mb-2" type="email" placeholder="Email" [formControl]="email" required 
+                [ngClass]="{ 'is-invalid': email.touched && email.errors }" />
+            <div class="invalid-feedback" *ngIf="email.touched && email.errors">
+                <div *ngIf="email.errors['required']">Please enter an email.</div>
+                <div *ngIf="email.errors['email']">Please enter a valid email address.</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control lg mb-2" [type]="showPassword ? 'text' : 'password'" placeholder="New password" [formControl]="password" required 
+                    [ngClass]="{ 'is-invalid': password.touched && password.errors }" />
+                <div class="eye">
+                    <i alt="show" class="fa fa-eye" (click)="showPassword = !showPassword"
+                        [class.hide]="showPassword"></i>
+                    <i alt="hide" class="fa fa-eye-slash" (click)="showPassword = !showPassword"
+                        [class.hide]="!showPassword"></i>
+                </div>
+                <div class="invalid-feedback" *ngIf="password.touched && password.errors">
+                    <div *ngIf="password.errors['required']">Please enter a password.</div>
+                    <div *ngIf="password.errors['minlength']">Password must have at least 4 characters.</div>
+                    <div *ngIf="password.errors['pattern']">Password must have at least one lowercase, one uppercase letter and one special character.</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control lg mb-2" [type]="confirmShowPassword ? 'text' : 'password'" placeholder="Confirm password" [formControl]="confirmPassword" required 
+                    [ngClass]="{ 'is-invalid': confirmPassword.touched && confirmPassword.errors }" />
+                <div class="eye">
+                    <i alt="show" class="fa fa-eye" (click)="confirmShowPassword = !confirmShowPassword"
+                        [class.hide]="confirmShowPassword"></i>
+                    <i alt="hide" class="fa fa-eye-slash" (click)="confirmShowPassword = !confirmShowPassword"
+                        [class.hide]="!confirmShowPassword"></i>
+                </div>
+                <div class="invalid-feedback" *ngIf="confirmPassword.touched && confirmPassword.errors">
+                    <div *ngIf="confirmPassword.errors['required']">Please confirm a password.</div>
+                    <div *ngIf="confirmPassword.errors['matching']">Password must match.</div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary w-100">Join</button>
         <hr />
         <div class="text-center">
             Already on DisLINKt?
