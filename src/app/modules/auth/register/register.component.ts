@@ -28,8 +28,8 @@ export class RegisterComponent implements OnInit {
     password: this.password,
     confirmPassword: this.confirmPassword
   })
-  showPassword: boolean = false;
-  confirmShowPassword: boolean = false;
+  showPassword = false;
+  confirmShowPassword = false;
 
   constructor(private service: AuthService, private router: Router, private toastr: ToastrService) { }
 
@@ -91,7 +91,7 @@ export class RegisterComponent implements OnInit {
     this.toastr.error(finalMessage, '', {
       closeButton: false,
       timeOut: 3000,
-      toastClass: "alert alert-danger alert-with-icon"
+      toastClass: "alert alert-danger alert-with-icon toast-space"
     });
   }
 }

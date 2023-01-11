@@ -1,0 +1,15 @@
+<div class="sidebar" data="primary">
+    <div class="logo">
+        <img class="logo" [src]="'assets/images/logo.png'" alt="DisLINKt" />
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{ menuItem.class }} nav-item">
+                <a [routerLink]="[menuItem.path]">
+                    <fa-icon [fixedWidth]="true" [icon]="menuItem.icon"></fa-icon>
+                    <span class="menu-item">{{ menuItem.title }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

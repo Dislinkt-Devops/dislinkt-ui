@@ -23,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     CoreModule,
     SharedModule,
     AppRoutingModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [
     { provide: "BASE_API_URL", useValue: environment.apiUrl }

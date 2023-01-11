@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   username = new FormControl('', [Validators.required]);
   password = new FormControl('', [Validators.required]);
-  showPassword: boolean = false;
+  showPassword = false;
 
   constructor(private service: AuthService, private router: Router, private toastr: ToastrService) { }
 
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     this.toastr.error('Given credentials are not valid.', '', {
       closeButton: false,
       timeOut: 3000,
-      toastClass: "alert alert-danger alert-with-icon"
+      toastClass: "alert alert-danger alert-with-icon toast-space"
     });
   }
 }
