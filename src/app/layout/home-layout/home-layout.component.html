@@ -2,8 +2,8 @@
     <div class="sidebar">
         <app-sidebar></app-sidebar>
     </div>
-    <div class="main-panel" data="primary">
-        <app-navbar></app-navbar>
+    <div class="main-panel" data="primary" [ngClass]="{ 'fix-position': sidebarOpen }">
+        <app-navbar (sideBarToggle)="onSidebarToggle($event)"></app-navbar>
         <router-outlet></router-outlet>
     </div>
 </div>

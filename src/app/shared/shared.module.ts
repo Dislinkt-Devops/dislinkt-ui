@@ -12,7 +12,8 @@ import {
   faUserGroup, 
   faNewspaper,
   faMagnifyingGlass,
-  faBell
+  faBell,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +46,8 @@ export class SharedModule {
       faUserGroup, 
       faNewspaper,
       faMagnifyingGlass,
-      faBell
+      faBell,
+      faXmark
     );
   }
 }

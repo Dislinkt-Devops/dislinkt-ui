@@ -2,16 +2,26 @@
     font-size: 20px;
 }
 
-.nav-link, .navbar-icon  {
+.navbar-brand {
+    font-size: 20px;
+}
+
+.nav-link,
+.navbar-icon {
     color: white;
     transition: 0.5s;
 }
 
-.nav-link:hover .caret, .navbar-icon:hover {
+.nav-link:hover .caret,
+.navbar-icon:hover {
     color: #1d8cf8;
     transition: 0.5s;
 }
 
 #search-button {
     padding-top: 13px;
+}
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
 }
