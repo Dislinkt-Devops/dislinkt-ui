@@ -45,7 +45,12 @@ export class RegisterComponent implements OnInit {
     };
     this.service.register(registerForm).subscribe({
       next: () => {
-        this.router.navigate(['/auth/register']);
+        this.freezeForm();
+        // TODO: redirect to the next step of profile configuration
+        this.showSuccessMessage('Successfully registered, you will be redirected to the Log in page.');
+        setTimeout(() => {
+          this.router.navigate(['/auth/login']);
+        }, 3000);
       },
       error: (err: HttpErrorResponse) => {
         let messages: string[] = [];
@@ -84,6 +89,21 @@ export class RegisterComponent implements OnInit {
 
   isFormValid(): boolean {
     return this.username.valid && this.email.valid && this.password.valid && this.confirmPassword.valid;
+  }
+
+  freezeForm(): void {
+    this.username.disable();
+    this.email.disable();
+    this.password.disable();
+    this.confirmPassword.disable();
+  }
+
+  showSuccessMessage(message: string): void {
+    this.toastr.success(message, '', {
+      closeButton: false,
+      timeOut: 3000,
+      toastClass: "alert alert-success alert-with-icon toast-space"
+    });
   }
 
   showErrorMessage(messages: string[]): void {
