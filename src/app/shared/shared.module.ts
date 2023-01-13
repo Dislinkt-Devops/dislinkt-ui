@@ -13,7 +13,10 @@ import {
   faNewspaper,
   faMagnifyingGlass,
   faBell,
-  faXmark
+  faXmark,
+  faComments,
+  faRightToBracket,
+  faUserPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -47,7 +50,10 @@ export class SharedModule {
       faNewspaper,
       faMagnifyingGlass,
       faBell,
-      faXmark
+      faXmark,
+      faComments,
+      faRightToBracket,
+      faUserPlus   
     );
   }
 }

@@ -15,13 +15,22 @@ export class RouteService {
         path: "",
         title: "Feed",
         icon: "newspaper",
-        class: ""
+        class: "",
+        needsAuth: false
       },
       {
         path: "/people",
         title: "People",
         icon: "user-group",
-        class: ""
+        class: "",
+        needsAuth: false
+      },
+      {
+        path: "/messages",
+        title: "Messages",
+        icon: "comments",
+        class: "",
+        needsAuth: true
       }
     ];
   }

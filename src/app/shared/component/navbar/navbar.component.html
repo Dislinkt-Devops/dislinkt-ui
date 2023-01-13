@@ -23,15 +23,33 @@
                 <li class="search-bar input-group">
                     <button class="btn btn-link" data-target="#searchModal" data-toggle="modal" id="search-button"
                         (click)="open(content)">
-                        <fa-icon [fixedWidth]="true" class="navbar-icon" icon="magnifying-glass"></fa-icon>
+                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="magnifying-glass"></fa-icon>
                         <span class="d-lg-none d-md-block"> Search </span>
                     </button>
                 </li>
-                <li class="nav-item" ngbDropdown>
+                <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
+                    <button class="btn btn-primary btn-simple btn-sm" routerLink="/auth/login">
+                        Log in
+                    </button>
+                    <button class="btn btn-link" routerLink="/auth/login">
+                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="right-to-bracket"></fa-icon>
+                        <span class="d-lg-none d-md-block"> Log in </span>
+                    </button>
+                </li>
+                <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
+                    <button class="btn btn-success btn-simple btn-sm" routerLink="/auth/register">
+                        Register in
+                    </button>
+                    <button class="btn btn-link" routerLink="/auth/register">
+                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="user-plus"></fa-icon>
+                        <span class="d-lg-none d-md-block"> Register in </span>
+                    </button>
+                </li>
+                <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
                     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
                         <div class="notification d-none d-lg-block d-xl-block"></div>
-                        <fa-icon [fixedWidth]="true" class="navbar-icon" icon="bell"></fa-icon>
-                        <p class=" d-lg-none">Notifications</p>
+                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="bell"></fa-icon>
+                        <p class="d-lg-none not-space">Notifications</p>
                     </a>
                     <ul class="dropdown-menu-right dropdown-navbar" ngbDropdownMenu>
                         <li class="nav-link">
@@ -61,13 +79,13 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" ngbDropdown>
+                <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
                     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
                         <div class="photo">
                             <img alt="Profile Photo" src="assets/images/anime3.png" />
                         </div>
                         <b class="caret d-none d-lg-block d-xl-block"> </b>
-                        <p class="d-lg-none">Log out</p>
+                        <p class="d-lg-none">You</p>
                     </a>
                     <ul class="dropdown-navbar" ngbDropdownMenu>
                         <li class="nav-link">
@@ -82,7 +100,7 @@
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                            <a class="nav-item" (click)="logout()" ngbDropdownItem>
                                 Log out
                             </a>
                         </li>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fromEvent, Observable, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/service/auth.service';
 import { RouteService } from 'src/app/core/service/route.service';
 
 @Component({
@@ -18,9 +19,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   resizeSubscription$: Subscription;
   closeResult = '';
 
-  constructor(private modalService: NgbModal, private routeService: RouteService) {
+  constructor(private modalService: NgbModal, private routeService: RouteService, private authService: AuthService) {
     this.resizeObservable$ = fromEvent(window, 'resize')
-    this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
+    this.resizeSubscription$ = this.resizeObservable$.subscribe(() => {
       if (window.innerWidth > 993) {
         this.isCollapsed = true;
       }
@@ -56,6 +57,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.getUserInfo() !== null;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
   ngOnDestroy() {
