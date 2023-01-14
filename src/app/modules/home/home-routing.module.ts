@@ -10,8 +10,9 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomePageComponent
-      },
+        component: HomePageComponent,
+        data: { title: 'Feed' }
+      }
     ]
   }
 ];

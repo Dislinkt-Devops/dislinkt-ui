@@ -22,10 +22,10 @@
                 <input class="form-control lg mb-2" [type]="showPassword ? 'text' : 'password'" placeholder="New password" [formControl]="password" required 
                     [ngClass]="{ 'is-invalid': password.touched && password.errors }" />
                 <div class="eye">
-                    <i alt="show" class="fa fa-eye" (click)="showPassword = !showPassword"
-                        [class.hide]="showPassword"></i>
-                    <i alt="hide" class="fa fa-eye-slash" (click)="showPassword = !showPassword"
-                        [class.hide]="!showPassword"></i>
+                    <fa-icon icon="eye" (click)="showPassword = !showPassword"
+                        [class.hide]="showPassword"></fa-icon>
+                    <fa-icon icon="eye-slash" (click)="showPassword = !showPassword"
+                        [class.hide]="!showPassword"></fa-icon>
                 </div>
                 <div class="invalid-feedback" *ngIf="password.touched && password.errors">
                     <div *ngIf="password.errors['required']">Please enter a password.</div>
@@ -39,10 +39,10 @@
                 <input class="form-control lg mb-2" [type]="confirmShowPassword ? 'text' : 'password'" placeholder="Confirm password" [formControl]="confirmPassword" required 
                     [ngClass]="{ 'is-invalid': confirmPassword.touched && confirmPassword.errors }" />
                 <div class="eye">
-                    <i alt="show" class="fa fa-eye" (click)="confirmShowPassword = !confirmShowPassword"
-                        [class.hide]="confirmShowPassword"></i>
-                    <i alt="hide" class="fa fa-eye-slash" (click)="confirmShowPassword = !confirmShowPassword"
-                        [class.hide]="!confirmShowPassword"></i>
+                    <fa-icon icon="eye" (click)="confirmShowPassword = !confirmShowPassword"
+                        [class.hide]="confirmShowPassword"></fa-icon>
+                    <fa-icon icon="eye-slash" (click)="confirmShowPassword = !confirmShowPassword"
+                        [class.hide]="!confirmShowPassword"></fa-icon>
                 </div>
                 <div class="invalid-feedback" *ngIf="confirmPassword.touched && confirmPassword.errors">
                     <div *ngIf="confirmPassword.errors['required']">Please confirm a password.</div>

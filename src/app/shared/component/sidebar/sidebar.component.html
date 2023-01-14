@@ -1,0 +1,20 @@
+<div class="sidebar" data="primary">
+    <a routerLink="">
+        <div class="logo">
+            <img class="logo" [src]="'assets/images/logo.png'" alt="DisLINKt" />
+        </div>
+    </a>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <ng-container *ngFor="let menuItem of menuItems">
+                <li routerLinkActive="active" class="{{ menuItem.class }} nav-item"
+                    *ngIf="!menuItem.needsAuth || isAuthenticated()">
+                    <a [routerLink]="[menuItem.path]" class="item">
+                        <fa-icon [fixedWidth]="true" [icon]="menuItem.icon"></fa-icon>
+                        <span class="menu-item">{{ menuItem.title }}</span>
+                    </a>
+                </li>
+            </ng-container>
+        </ul>
+    </div>
+</div>

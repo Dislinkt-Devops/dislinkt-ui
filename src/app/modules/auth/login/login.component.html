@@ -13,10 +13,10 @@
                     [formControl]="password" required
                     [ngClass]="{ 'is-invalid': password.touched && password.errors }" />
                 <div class="eye">
-                    <i alt="show" class="fa fa-eye" (click)="showPassword = !showPassword"
-                        [class.hide]="showPassword"></i>
-                    <i alt="hide" class="fa fa-eye-slash" (click)="showPassword = !showPassword"
-                        [class.hide]="!showPassword"></i>
+                    <fa-icon icon="eye" (click)="showPassword = !showPassword"
+                        [class.hide]="showPassword"></fa-icon>
+                    <fa-icon icon="eye-slash" (click)="showPassword = !showPassword"
+                        [class.hide]="!showPassword"></fa-icon>
                 </div>
                 <div class="invalid-feedback" *ngIf="password.touched && password.errors">
                     Please enter a password.
