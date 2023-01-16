@@ -19,14 +19,14 @@ export class RouteService {
         needsAuth: false
       },
       {
-        path: "/people",
+        path: "people",
         title: "People",
         icon: "user-group",
         class: "",
         needsAuth: false
       },
       {
-        path: "/messages",
+        path: "messages",
         title: "Messages",
         icon: "comments",
         class: "",

@@ -7,7 +7,7 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <ng-container *ngFor="let menuItem of menuItems">
-                <li routerLinkActive="active" class="{{ menuItem.class }} nav-item"
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="{{ menuItem.class }} nav-item"
                     *ngIf="!menuItem.needsAuth || isAuthenticated()">
                     <a [routerLink]="[menuItem.path]" class="item">
                         <fa-icon [fixedWidth]="true" [icon]="menuItem.icon"></fa-icon>
