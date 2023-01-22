@@ -10,6 +10,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { HomeLayoutComponent } from './layout/home-layout/home-layout.component';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AuthModule,
     CoreModule,
     SharedModule,
