@@ -1,0 +1,203 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Security Settings</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputUsername">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputUsername"
+                    aria-describedby="usernameHelp"
+                    placeholder="Enter username"
+										[value]="userToken?.username"
+                  />
+                  <small id="usernameHelp" class="form-text text-muted"
+                    >Your unique username.</small
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                  />
+                  <small id="emailHelp" class="form-text text-muted"
+                    >We'll never share your email with anyone else.</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputPassword">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputPassword"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputEmail4"
+                  placeholder="First Name"
+                  [value]="userData?.firstName"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputPassword4"
+                  placeholder="Last Name"
+                  [value]="userData?.lastName"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputPhoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputPhoneNumber"
+                  placeholder="0612345678"
+                  [value]="userData?.phoneNumber"
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputDateOfBirth">Date of birth</label>
+                <input type="date" class="form-control" id="inputDateOfBirth" />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">Gender</label>
+                <select id="inputState" class="form-control">
+                  <option [selected]="userData?.gender === 'MALE'" value="MALE">
+                    Male
+                  </option>
+                  <option
+                    [selected]="userData?.gender === 'FEMALE'"
+                    value="FEMALE"
+                  >
+                    Female
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="biography">Biography</label>
+              <textarea
+                class="form-control"
+                id="biography"
+                rows="3"
+                [value]="userData?.bio"
+								placeholder="About Me"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    [checked]="userData?.privacy === 'PUBLIC'"
+                    type="checkbox"
+                    value=""
+                  />
+                  Public visibility
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Apply Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-body">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a [routerLink]="">
+              <img
+                class="avatar"
+                src="https://xsgames.co/randomusers/avatar.php?g=male"
+                alt="..."
+              />
+              <h5 class="title">{{userData?.firstName}} {{userData?.lastName}}</h5>
+            </a>
+            <p class="description">{{userData?.privacy === 'PUBLIC' ? 'Public' : 'Private'}} Profile</p>
+          </div>
+          <p></p>
+          <p class="card-description">
+            {{ userData?.bio ? userData?.bio : 'About me' }}
+          </p>
+        </div>
+        <div class="card-footer">
+          <div class="button-container">
+            <button type="button" class="btn btn-primary">Visit Profile</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Block list</h5>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Name Name X</li>
+            <li>Name Name X</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  >
+</div>
