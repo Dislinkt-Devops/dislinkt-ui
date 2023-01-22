@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
@@ -20,15 +19,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DateAsAgoPipe } from './pipes/date-as-ago.pipe';
 
 @NgModule({
   declarations: [
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    DateAsAgoPipe,
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     FontAwesomeModule,
     RouterModule,
     NgbModule,
@@ -38,7 +38,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavbarComponent,
     SidebarComponent,
     FontAwesomeModule,
-    RouterModule
+    RouterModule,
+    DateAsAgoPipe,
   ]
 })
 export class SharedModule {
