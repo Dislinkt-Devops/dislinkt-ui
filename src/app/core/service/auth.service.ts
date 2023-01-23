@@ -12,7 +12,6 @@ export class AuthService {
 
   private readonly STORAGE_ACCESS_NAME = 'accessToken';
   private readonly STORAGE_REFRESH_NAME = 'refreshToken';
-  private readonly headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   private readonly path = 'auth';
   private readonly helper = new JwtHelperService();
 
@@ -34,16 +33,18 @@ export class AuthService {
       expireDate.setMinutes(expireDate.getMinutes() + (decoded.exp / 60));
 
       this.userToken = {
+        userId: decoded.userId,
         accessToken: accessToken,
         expiresIn: expireDate.getTime(),
-        username: decoded.username,
+        username: decoded.username, 
+        email: decoded.email,
         role: decoded.role
       } as UserInfo;
     }
   }
 
   login(loginForm: LoginForm): Observable<void> {
-    return this.http.post<UserToken>(`${this.path}/login`, loginForm, { headers: this.headers })
+    return this.http.post<UserToken>(`${this.path}/login`, loginForm)
       .pipe(map((res) => {
         localStorage.setItem(this.STORAGE_ACCESS_NAME, res.accessToken);
         localStorage.setItem(this.STORAGE_REFRESH_NAME, res.refreshToken);
@@ -53,9 +54,17 @@ export class AuthService {
   }
 
   register(registerForm: RegisterForm): Observable<void> {
-    return this.http.post<void>(`${this.path}/register`, registerForm, { headers: this.headers })
+    return this.http.post<void>(`${this.path}/register`, registerForm)
       .pipe(map(() => {
       }));
+  }
+
+  changePassword(form: Partial<RegisterForm>) {
+    return this.http.post<any>(`${this.path}/password-change`, form);
+  }
+
+  updateUser(form: Partial<RegisterForm>) {
+    return this.http.put<any>(`${this.path}/update-user`, form);
   }
 
   logout(): void {

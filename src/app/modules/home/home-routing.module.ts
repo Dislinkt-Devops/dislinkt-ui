@@ -4,6 +4,7 @@ import { HomeLayoutComponent } from 'src/app/layout/home-layout/home-layout.comp
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: 'edit-profile',
         component: EditProfileComponent,
         data: { title: 'Edit Profile' },
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { title: 'Profile' },
       },
     ],
   },

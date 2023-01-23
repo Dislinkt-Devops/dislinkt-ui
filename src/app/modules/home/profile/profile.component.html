@@ -1,0 +1,53 @@
+<div class="content">
+  <div class="row">
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="title">Posts</h5>
+				</div>
+			</div>
+		</div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-body">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a [routerLink]="">
+              <img
+                class="avatar"
+                src="https://xsgames.co/randomusers/avatar.php?g=male"
+                alt="..."
+              />
+              <h5 class="title">
+                {{ userData?.firstName }} {{ userData?.lastName }}
+              </h5>
+            </a>
+            <p class="description">
+              {{
+                userInfo?.role === "REGISTERED_USER" ? "Registered User" : "Administrator"
+              }}
+            </p>
+          </div>
+          <p></p>
+          <p class="card-description">
+            {{ userData?.bio ? userData?.bio : "About me" }}
+          </p>
+        </div>
+        <div class="card-footer">
+          <div class="button-container">
+            <button
+              [routerLink]="['/edit-profile']"
+              type="button"
+              class="btn btn-primary"
+            >
+              Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+	</div>
+</div>

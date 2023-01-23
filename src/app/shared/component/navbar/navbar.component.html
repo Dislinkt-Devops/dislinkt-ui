@@ -89,18 +89,18 @@
                     </a>
                     <ul class="dropdown-navbar" ngbDropdownMenu>
                         <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                            <a class="nav-item" [routerLink]="['/profile']" ngbDropdownItem>
                                 Profile
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                            <a class="nav-item" [routerLink]="['/edit-profile']" ngbDropdownItem>
                                 Settings
                             </a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-link">
-                            <a class="nav-item" (click)="logout()" ngbDropdownItem>
+                            <a class="nav-item" [routerLink]="['']" (click)="logout()" ngbDropdownItem>
                                 Log out
                             </a>
                         </li>

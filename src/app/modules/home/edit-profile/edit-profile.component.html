@@ -3,10 +3,10 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h5 class="title">Security Settings</h5>
+          <h5 class="title">General Settings</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="submitAuthSettings()">
             <div class="row">
               <div class="col">
                 <div class="form-group">
@@ -17,11 +17,26 @@
                     id="inputUsername"
                     aria-describedby="usernameHelp"
                     placeholder="Enter username"
-										[value]="userToken?.username"
+                    [formControl]="username"
+                    [ngClass]="{
+                      'is-invalid': username.touched && username.errors
+                    }"
+                    required
                   />
-                  <small id="usernameHelp" class="form-text text-muted"
-                    >Your unique username.</small
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="username.touched && username.errors"
                   >
+                    <div *ngIf="username.errors['required']">
+                      Please enter a username.
+                    </div>
+                    <div *ngIf="username.errors['minlength']">
+                      Username must have at least 4 characters.
+                    </div>
+                    <div *ngIf="username.errors['maxlength']">
+                      Username must be under 20 characters.
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col">
@@ -33,10 +48,21 @@
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
                     placeholder="Enter email"
+                    [formControl]="email"
+                    required
+                    [ngClass]="{ 'is-invalid': email.touched && email.errors }"
                   />
-                  <small id="emailHelp" class="form-text text-muted"
-                    >We'll never share your email with anyone else.</small
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="email.touched && email.errors"
                   >
+                    <div *ngIf="email.errors['required']">
+                      Please enter an email.
+                    </div>
+                    <div *ngIf="email.errors['email']">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -49,7 +75,26 @@
                     class="form-control"
                     id="inputPassword"
                     placeholder="Password"
+                    [formControl]="password"
+                    [ngClass]="{
+                      'is-invalid': password.touched && password.errors
+                    }"
                   />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="password.touched && password.errors"
+                  >
+                    <div *ngIf="password.errors['required']">
+                      Please enter a password.
+                    </div>
+                    <div *ngIf="password.errors['minlength']">
+                      Password must have at least 4 characters.
+                    </div>
+                    <div *ngIf="password.errors['pattern']">
+                      Password must have at least one lowercase, one uppercase
+                      letter and one special character.
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col">
@@ -60,11 +105,27 @@
                     class="form-control"
                     id="confirmPassword"
                     placeholder="Password"
+                    [formControl]="confirmPassword"
+                    [ngClass]="{
+                      'is-invalid':
+                        confirmPassword.touched && confirmPassword.errors
+                    }"
                   />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="confirmPassword.touched && confirmPassword.errors"
+                  >
+                    <div *ngIf="confirmPassword.errors['required']">
+                      Please confirm a password.
+                    </div>
+                    <div *ngIf="confirmPassword.errors['matching']">
+                      Password must match.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Apply Changes</button>
           </form>
         </div>
       </div>
@@ -133,7 +194,7 @@
                 id="biography"
                 rows="3"
                 [value]="userData?.bio"
-								placeholder="About Me"
+                placeholder="About Me"
               ></textarea>
             </div>
             <div class="form-group">
@@ -152,7 +213,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Apply Changes</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </form>
         </div>
       </div>
@@ -171,18 +232,30 @@
                 src="https://xsgames.co/randomusers/avatar.php?g=male"
                 alt="..."
               />
-              <h5 class="title">{{userData?.firstName}} {{userData?.lastName}}</h5>
+              <h5 class="title">
+                {{ userData?.firstName }} {{ userData?.lastName }}
+              </h5>
             </a>
-            <p class="description">{{userData?.privacy === 'PUBLIC' ? 'Public' : 'Private'}} Profile</p>
+            <p class="description">
+              {{
+                userInfo?.role === "REGISTERED_USER" ? "Registered User" : "Administrator"
+              }}
+            </p>
           </div>
           <p></p>
           <p class="card-description">
-            {{ userData?.bio ? userData?.bio : 'About me' }}
+            {{ userData?.bio ? userData?.bio : "About me" }}
           </p>
         </div>
         <div class="card-footer">
           <div class="button-container">
-            <button type="button" class="btn btn-primary">Visit Profile</button>
+            <button
+              [routerLink]="['/profile']"
+              type="button"
+              class="btn btn-primary"
+            >
+              Visit Profile
+            </button>
           </div>
         </div>
       </div>
@@ -190,11 +263,8 @@
         <div class="card-header">
           <h5 class="title">Block list</h5>
         </div>
-        <div class="card-body">
-          <ul>
-            <li>Name Name X</li>
-            <li>Name Name X</li>
-          </ul>
+        <div class="card-body text-center">
+          <h4 class="card-title">-</h4>
         </div>
       </div>
     </div>
