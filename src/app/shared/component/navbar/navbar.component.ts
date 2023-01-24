@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/service/auth.service';
-import { RouteService } from 'src/app/core/service/route.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   resizeSubscription$: Subscription;
   closeResult = '';
 
-  constructor(private modalService: NgbModal, private routeService: RouteService, private authService: AuthService) {
+  constructor(private modalService: NgbModal, private authService: AuthService, private titleService: Title) {
     this.resizeObservable$ = fromEvent(window, 'resize')
     this.resizeSubscription$ = this.resizeObservable$.subscribe(() => {
       if (window.innerWidth > 993) {
@@ -45,8 +45,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   getRouteTitle(): string {
-    let route = this.routeService.getActiveRoute()?.title;
-    return route ?? '';
+    return this.titleService.getTitle().replace('DisLINKt - ', '');
   }
 
   getDismissReason(reason: any): string {

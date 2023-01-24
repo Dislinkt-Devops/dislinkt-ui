@@ -1,0 +1,288 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">General Settings</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="submitAuthSettings()">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputUsername">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputUsername"
+                    aria-describedby="usernameHelp"
+                    placeholder="Enter username"
+                    [formControl]="username"
+                    [ngClass]="{
+                      'is-invalid': username.touched && username.errors
+                    }"
+                    required
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="username.touched && username.errors"
+                  >
+                    <div *ngIf="username.errors['required']">
+                      Please enter a username.
+                    </div>
+                    <div *ngIf="username.errors['minlength']">
+                      Username must have at least 4 characters.
+                    </div>
+                    <div *ngIf="username.errors['maxlength']">
+                      Username must be under 20 characters.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    [formControl]="email"
+                    required
+                    [ngClass]="{ 'is-invalid': email.touched && email.errors }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="email.touched && email.errors"
+                  >
+                    <div *ngIf="email.errors['required']">
+                      Please enter an email.
+                    </div>
+                    <div *ngIf="email.errors['email']">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputPassword">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputPassword"
+                    placeholder="Password"
+                    [formControl]="password"
+                    [ngClass]="{
+                      'is-invalid': password.touched && password.errors
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="password.touched && password.errors"
+                  >
+                    <div *ngIf="password.errors['required']">
+                      Please enter a password.
+                    </div>
+                    <div *ngIf="password.errors['minlength']">
+                      Password must have at least 4 characters.
+                    </div>
+                    <div *ngIf="password.errors['pattern']">
+                      Password must have at least one lowercase, one uppercase
+                      letter and one special character.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    placeholder="Password"
+                    [formControl]="confirmPassword"
+                    [ngClass]="{
+                      'is-invalid':
+                        confirmPassword.touched && confirmPassword.errors
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="confirmPassword.touched && confirmPassword.errors"
+                  >
+                    <div *ngIf="confirmPassword.errors['required']">
+                      Please confirm a password.
+                    </div>
+                    <div *ngIf="confirmPassword.errors['matching']">
+                      Password must match.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <button type="submit" class="btn btn-primary" [disabled]="!(username.touched || email.touched) || (username.errors || email.errors)">Apply Changes</button>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="submitEditProfile()">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputEmail4"
+                  placeholder="First Name"
+                  [formControl]="firstName"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputPassword4"
+                  placeholder="Last Name"
+                  [formControl]="lastName"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputPhoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputPhoneNumber"
+                  placeholder="0612345678"
+                  [formControl]="phoneNumber"
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputDateOfBirth">Date of birth</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="inputDateOfBirth"
+                  [formControl]="dateOfBirth"
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">Gender</label>
+                <select
+                  id="inputState"
+                  class="form-control"
+                  [formControl]="gender"
+                >
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="biography">Biography</label>
+              <textarea
+                class="form-control"
+                id="biography"
+                rows="3"
+                placeholder="About Me"
+                [formControl]="bio"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [formControl]="privacy"
+                  />
+                  Public visibility
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-body">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a [routerLink]="">
+              <img
+                class="avatar"
+                src="https://xsgames.co/randomusers/avatar.php?g={{
+                  gender.value === 'MALE' ? 'male' : 'female'
+                }}"
+                alt="..."
+              />
+              <h5 class="title">{{ firstName.value }} {{ lastName.value }}</h5>
+            </a>
+            <p class="description">
+              {{
+                userInfo?.role === "REGISTERED_USER"
+                  ? "Registered User"
+                  : "Administrator"
+              }}
+            </p>
+          </div>
+          <p></p>
+          <p class="card-description">
+            {{ bio.value ? bio.value : "About me" }}
+          </p>
+        </div>
+        <div class="card-footer">
+          <div class="button-container">
+            <button
+              [routerLink]="['/profile']"
+              type="button"
+              class="btn btn-primary"
+            >
+              Visit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Block list</h5>
+        </div>
+        <div class="card-body">
+          <h5 *ngIf="blockedUsers.length === 0" class="card-title">You don't have blocked users.</h5>
+          <ul *ngIf="blockedUsers.length > 1">
+            <li *ngFor="let blockedUser of blockedUsers">
+              {{ blockedUser.firstName }} {{ blockedUser.lastName }}
+              <button
+                type="button"
+                rel="tooltip"
+                class="btn btn-danger btn-sm btn-round btn-icon"
+                (click)="unblock(blockedUser.id)"
+              >
+                X
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

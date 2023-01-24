@@ -15,9 +15,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   private readonly STORAGE_ACCESS_NAME = 'accessToken';
   private readonly STORAGE_REFRESH_NAME = 'refreshToken';
-  private readonly headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-  });
   private readonly path = 'auth';
   private readonly helper = new JwtHelperService();
 
@@ -36,10 +33,12 @@ export class AuthService {
       let decoded = this.helper.decodeToken(accessToken);
 
       this.userToken = {
+        userId: decoded.userId,
         isActive: decoded.isActive,
         accessToken: accessToken,
         expiresIn: decoded.exp * 1000,
-        username: decoded.username,
+        username: decoded.username, 
+        email: decoded.email,
         role: decoded.role,
       } as UserInfo;
     }
@@ -62,6 +61,14 @@ export class AuthService {
     return this.http
       .post<void>(`${this.path}/register`, registerForm)
       .pipe(map(() => {}));
+  }
+
+  changePassword(form: Partial<RegisterForm>) {
+    return this.http.post<any>(`${this.path}/password-change`, form);
+  }
+
+  updateUser(form: Partial<RegisterForm>) {
+    return this.http.put<any>(`${this.path}/update-user`, form);
   }
 
   logout(): void {
