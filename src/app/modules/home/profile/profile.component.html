@@ -36,7 +36,7 @@
             {{ userData?.bio ? userData?.bio : "About me" }}
           </p>
         </div>
-        <div class="card-footer">
+        <div *ngIf="userData?.id === userInfo?.userId" class="card-footer">
           <div class="button-container">
             <button
               [routerLink]="['/edit-profile']"

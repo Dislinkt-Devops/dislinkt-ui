@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { UserInfo } from 'src/app/core/model';
+import { PersonInfo, UserInfo } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
 
@@ -11,7 +11,7 @@ import { PeopleService } from 'src/app/core/service/people.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  userData: any;
+  userData: PersonInfo | null = null;
   userInfo: UserInfo | null = null;
   userIdParam: string | null = null;
 
@@ -26,17 +26,18 @@ export class ProfileComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    //TEMPORARY
-    const allUsers = (
-      await lastValueFrom(this.peopleService.getFollowedUsers())
-    ).data;
+    if (this.userIdParam) {
+      // temp solution
+      const allUsers = (
+        await lastValueFrom(this.peopleService.getAllUsers())
+      ).data;
 
-    const userId = this.userIdParam || this.userInfo?.userId
-
-    if (userId)
       this.userData = allUsers.find(
-        (user: any) => user.id === userId
-      );
+        (user: any) => user.id === this.userIdParam
+      ) || null;
+    } else if (this.userInfo?.userId) {
+      this.userData = (await lastValueFrom(this.peopleService.getMyProfile())).data
+    }
 
     if (!this.userData)
       this.router.navigate(['/'])

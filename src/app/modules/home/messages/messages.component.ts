@@ -29,7 +29,7 @@ export class MessagesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.availableUsers = (
-      await lastValueFrom(this.peopleService.getFollowedUsers())
+      await lastValueFrom(this.peopleService.getAllUsers())
     ).data;
 
     this.service.getNewMessage().subscribe((message: Message) => {

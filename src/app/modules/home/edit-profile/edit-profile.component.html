@@ -66,7 +66,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col">
                 <div class="form-group">
                   <label for="inputPassword">Password</label>
@@ -124,8 +124,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Apply Changes</button>
+            </div> -->
+            <button type="submit" class="btn btn-primary" [disabled]="!(username.touched || email.touched) || (username.errors || email.errors)">Apply Changes</button>
           </form>
         </div>
       </div>
@@ -134,7 +134,7 @@
           <h5 class="title">Edit Profile</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="submitEditProfile()">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="inputEmail4">First Name</label>
@@ -143,7 +143,7 @@
                   class="form-control"
                   id="inputEmail4"
                   placeholder="First Name"
-                  [value]="userData?.firstName"
+                  [formControl]="firstName"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -153,7 +153,7 @@
                   class="form-control"
                   id="inputPassword4"
                   placeholder="Last Name"
-                  [value]="userData?.lastName"
+                  [formControl]="lastName"
                 />
               </div>
             </div>
@@ -165,25 +165,27 @@
                   class="form-control"
                   id="inputPhoneNumber"
                   placeholder="0612345678"
-                  [value]="userData?.phoneNumber"
+                  [formControl]="phoneNumber"
                 />
               </div>
               <div class="form-group col-md-4">
                 <label for="inputDateOfBirth">Date of birth</label>
-                <input type="date" class="form-control" id="inputDateOfBirth" />
+                <input
+                  type="date"
+                  class="form-control"
+                  id="inputDateOfBirth"
+                  [formControl]="dateOfBirth"
+                />
               </div>
               <div class="form-group col-md-4">
                 <label for="inputState">Gender</label>
-                <select id="inputState" class="form-control">
-                  <option [selected]="userData?.gender === 'MALE'" value="MALE">
-                    Male
-                  </option>
-                  <option
-                    [selected]="userData?.gender === 'FEMALE'"
-                    value="FEMALE"
-                  >
-                    Female
-                  </option>
+                <select
+                  id="inputState"
+                  class="form-control"
+                  [formControl]="gender"
+                >
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
                 </select>
               </div>
             </div>
@@ -193,8 +195,8 @@
                 class="form-control"
                 id="biography"
                 rows="3"
-                [value]="userData?.bio"
                 placeholder="About Me"
+                [formControl]="bio"
               ></textarea>
             </div>
             <div class="form-group">
@@ -202,9 +204,8 @@
                 <label class="form-check-label">
                   <input
                     class="form-check-input"
-                    [checked]="userData?.privacy === 'PUBLIC'"
                     type="checkbox"
-                    value=""
+                    [formControl]="privacy"
                   />
                   Public visibility
                   <span class="form-check-sign">
@@ -229,22 +230,24 @@
             <a [routerLink]="">
               <img
                 class="avatar"
-                src="https://xsgames.co/randomusers/avatar.php?g=male"
+                src="https://xsgames.co/randomusers/avatar.php?g={{
+                  gender.value === 'MALE' ? 'male' : 'female'
+                }}"
                 alt="..."
               />
-              <h5 class="title">
-                {{ userData?.firstName }} {{ userData?.lastName }}
-              </h5>
+              <h5 class="title">{{ firstName.value }} {{ lastName.value }}</h5>
             </a>
             <p class="description">
               {{
-                userInfo?.role === "REGISTERED_USER" ? "Registered User" : "Administrator"
+                userInfo?.role === "REGISTERED_USER"
+                  ? "Registered User"
+                  : "Administrator"
               }}
             </p>
           </div>
           <p></p>
           <p class="card-description">
-            {{ userData?.bio ? userData?.bio : "About me" }}
+            {{ bio.value ? bio.value : "About me" }}
           </p>
         </div>
         <div class="card-footer">
@@ -263,11 +266,23 @@
         <div class="card-header">
           <h5 class="title">Block list</h5>
         </div>
-        <div class="card-body text-center">
-          <h4 class="card-title">-</h4>
+        <div class="card-body">
+          <h5 *ngIf="blockedUsers.length === 0" class="card-title">You don't have blocked users.</h5>
+          <ul *ngIf="blockedUsers.length > 1">
+            <li *ngFor="let blockedUser of blockedUsers">
+              {{ blockedUser.firstName }} {{ blockedUser.lastName }}
+              <button
+                type="button"
+                rel="tooltip"
+                class="btn btn-danger btn-sm btn-round btn-icon"
+                (click)="unblock(blockedUser.id)"
+              >
+                X
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
-  >
 </div>
