@@ -20,6 +20,7 @@ import {
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DateAsAgoPipe } from './pipes/date-as-ago.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DateAsAgoPipe } from './pipes/date-as-ago.pipe';
     FontAwesomeModule,
     RouterModule,
     NgbModule,
+    FormsModule,
     ToastrModule.forRoot(), // ToastrModule added
   ],
   exports: [

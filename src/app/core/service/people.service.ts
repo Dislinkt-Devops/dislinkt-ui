@@ -40,4 +40,8 @@ export class PeopleService {
       })
     );
   }
+
+  searchPeople(keyword: string) {
+    return this.http.get<Response<PersonInfo[]>>(`${this.path}/search`, { params: { keyword } });
+  }
 }

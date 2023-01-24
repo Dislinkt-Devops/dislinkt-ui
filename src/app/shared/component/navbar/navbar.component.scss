@@ -43,6 +43,34 @@
     z-index: 1050 !important;
 }
 
+.profile {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.5s;
+    margin-bottom: 5px;
+}
+
+.profile:hover {
+    background-color: rgb(209, 209, 209);
+    transition: 0.5s;
+}
+
+.profile-image {
+    margin-left: 30px;
+    margin-right: 15px;
+    width: 64px;
+}
+
+.profile-name {
+    font-size: 24px;
+    padding-top: 8px;
+}
+
+
 @media screen and (max-width: 993px) {
     .nav-link,
     .nav-fa-icon {
@@ -76,5 +104,14 @@
 
     .not-space {
         margin-left: 1px !important;
+    }
+
+    .profile-image {
+        width: 48px;
+    }
+    
+    .profile-name {
+        font-size: 20px;
+        padding-top: 4px;
     }
 }
