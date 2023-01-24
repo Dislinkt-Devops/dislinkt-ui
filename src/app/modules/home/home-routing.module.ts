@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NotActivatedGuard } from 'src/app/core/guards';
 import { HomeLayoutComponent } from 'src/app/layout/home-layout/home-layout.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
         path: 'messages',
         component: MessagesComponent,
         data: { title: 'Messages' },
+        canActivate: [NotActivatedGuard],
       },
       {
         path: 'edit-profile',
