@@ -28,13 +28,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError(err => {
-        console.log(err);
         if (err.status === 401) {
           this.authService.logout();
         }
 
-        const error = err.error.message || err.statusText;
-        throw new Error(error);
+        throw err;
       })
     );
   }
