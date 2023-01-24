@@ -8,6 +8,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
+import { PostFormComponent } from './post-form/post-form.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
     MessagesComponent,
     EditProfileComponent,
     ProfileComponent,
+    PostFormComponent,
   ],
   imports: [
     CommonModule,

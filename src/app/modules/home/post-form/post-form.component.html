@@ -1,0 +1,87 @@
+<!-- Button trigger modal -->
+<button
+  #divClick
+  type="button"
+  class="btn btn-primary btn-sm"
+  (click)="open(content)"
+>
+  {{btnText || 'Add Post'}}
+</button>
+
+<!-- Modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="exampleModalLabel">Add Post</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+      <i class="tim-icons icon-simple-remove"></i>
+    </button>
+  </div>
+  <form [formGroup]="fg" (ngSubmit)="addPost()">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="inputUsername">Content</label>
+        <textarea
+          class="form-control"
+          id="content"
+          rows="3"
+          placeholder="Post content"
+          formControlName="text"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Image URL</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+          formControlName="imageUrl"
+          placeholder="Enter image URL"
+        />
+      </div>
+        <div
+          formArrayName="links"
+          *ngFor="let fg of linksFGControls; let i = index"
+        >
+          <div class="form-group form-group" [formGroup]="fg">
+            <label for="text{{ i + 1 }}">Link #{{ i + 1 }}</label>
+            <div class="row">
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="text{{ i + 1 }}"
+                  formControlName="link"
+                  placeholder="Enter URL"
+                />
+              </div>
+              <div class="col-md-3">
+                <button
+                  *ngIf="i !== 0"
+                  type="button"
+                  class="btn btn-danger animation-on-hover btn-sm"
+                  (click)="removeLink(i)"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" (click)="addLink()">
+        Add Link
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="modal.dismiss('Cross click')"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary">Add Post</button>
+    </div>
+  </form>
+</ng-template>

@@ -1,12 +1,15 @@
 <div class="content">
   <div class="row">
-		<div class="col-md-8">
-			<div class="card">
-				<div class="card-header">
-					<h5 class="title">Posts</h5>
-				</div>
-			</div>
-		</div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <h5 class="title">Posts</h5>
+            <add-post-button *ngIf="isMyProfile()" btnText="Publish Post"></add-post-button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="col-md-4">
       <div class="card card-user">
         <div class="card-body">
@@ -27,7 +30,9 @@
             </a>
             <p class="description">
               {{
-                userInfo?.role === "REGISTERED_USER" ? "Registered User" : "Administrator"
+                userInfo?.role === "REGISTERED_USER"
+                  ? "Registered User"
+                  : "Administrator"
               }}
             </p>
           </div>
@@ -36,7 +41,7 @@
             {{ userData?.bio ? userData?.bio : "About me" }}
           </p>
         </div>
-        <div *ngIf="userData?.id === userInfo?.userId" class="card-footer">
+        <div *ngIf="isMyProfile()" class="card-footer">
           <div class="button-container">
             <button
               [routerLink]="['/edit-profile']"
@@ -49,5 +54,5 @@
         </div>
       </div>
     </div>
-	</div>
+  </div>
 </div>
