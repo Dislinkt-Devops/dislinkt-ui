@@ -34,6 +34,7 @@ export class AuthService {
       expireDate.setMinutes(expireDate.getMinutes() + (decoded.exp / 60));
 
       this.userToken = {
+        isActive: decoded.isActive,
         accessToken: accessToken,
         expiresIn: expireDate.getTime(),
         username: decoded.username,

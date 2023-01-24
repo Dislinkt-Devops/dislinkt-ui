@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ActivatedGuard } from './core/guards/activated.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [ActivatedGuard],
     loadChildren: () =>
       import('./modules/home/home.module').then(m => m.HomeModule)
   },
