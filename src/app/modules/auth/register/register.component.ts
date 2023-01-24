@@ -2,9 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { RegisterForm } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
+import { ToastrUtils } from 'src/app/shared/utils';
 
 const PASSWORD_PATTERN = /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
   showPassword = false;
   confirmShowPassword = false;
 
-  constructor(private service: AuthService, private router: Router, private toastr: ToastrService) { }
+  constructor(private service: AuthService, private router: Router, private toastr: ToastrUtils) { }
 
   ngOnInit(): void {
   }
@@ -47,20 +47,13 @@ export class RegisterComponent implements OnInit {
       next: () => {
         this.freezeForm();
         // TODO: redirect to the next step of profile configuration
-        this.showSuccessMessage('Successfully registered, you will be redirected to the Log in page.');
+        this.toastr.showSuccessMessage('Successfully registered, you will be redirected to the Log in page.');
         setTimeout(() => {
           this.router.navigate(['/auth/login']);
         }, 3000);
       },
       error: (err: HttpErrorResponse) => {
-        let messages: string[] = [];
-        if (typeof err.error.message === 'string') {
-          messages = [err.error.message];
-        }
-        else {
-          messages = err.error.message;
-        }
-        this.showErrorMessage(messages);
+        this.toastr.showErrorMessageForResponse(err);
       }
     });
   }
@@ -96,22 +89,5 @@ export class RegisterComponent implements OnInit {
     this.email.disable();
     this.password.disable();
     this.confirmPassword.disable();
-  }
-
-  showSuccessMessage(message: string): void {
-    this.toastr.success(message, '', {
-      closeButton: false,
-      timeOut: 3000,
-      toastClass: "alert alert-success alert-with-icon toast-space"
-    });
-  }
-
-  showErrorMessage(messages: string[]): void {
-    let finalMessage = messages.map(x => `${x[0].toUpperCase()}${x.substring(1)}.`).join('\n');
-    this.toastr.error(finalMessage, '', {
-      closeButton: false,
-      timeOut: 3000,
-      toastClass: "alert alert-danger alert-with-icon toast-space"
-    });
   }
 }
