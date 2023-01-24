@@ -1,0 +1,102 @@
+<div class="card-body">
+  <h4 class="card-title">Activate Profile</h4>
+  <form (ngSubmit)="activate()">
+    <div class="form-group">
+      <label for="inputEmail4">First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="inputEmail4"
+        placeholder="First Name"
+        [formControl]="firstName"
+        [ngClass]="{ 'is-invalid': firstName.touched && firstName.errors }"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="firstName.touched && firstName.errors"
+      >
+        <div *ngIf="firstName.errors['required']">Please enter first name.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword4">Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="inputPassword4"
+        placeholder="Last Name"
+        [formControl]="lastName"
+        [ngClass]="{ 'is-invalid': lastName.touched && lastName.errors }"
+      />
+      <div class="invalid-feedback" *ngIf="lastName.touched && lastName.errors">
+        <div *ngIf="lastName.errors['required']">Please enter last name.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPhoneNumber">Phone Number</label>
+      <input
+        type="text"
+        class="form-control"
+        id="inputPhoneNumber"
+        placeholder="0612345678"
+        [formControl]="phoneNumber"
+        [ngClass]="{ 'is-invalid': phoneNumber.touched && phoneNumber.errors }"
+      />
+      <div class="invalid-feedback" *ngIf="phoneNumber.touched && phoneNumber.errors">
+        <div *ngIf="phoneNumber.errors['required']">Please enter phone number.</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="inputDateOfBirth">Date of birth</label>
+        <input
+          type="date"
+          class="form-control"
+          id="inputDateOfBirth"
+          [formControl]="dateOfBirth"
+        />
+      </div>
+      <div class="form-group col">
+        <label for="inputState">Gender</label>
+        <select id="inputState" class="form-control" [formControl]="gender">
+          <option value="MALE">Male</option>
+          <option value="FEMALE">Female</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="biography">Biography</label>
+      <textarea
+        class="form-control"
+        id="biography"
+        rows="3"
+        placeholder="About Me"
+        [formControl]="bio"
+      ></textarea>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            checked
+            [formControl]="privacy"
+          />
+          Public visibility
+          <span class="form-check-sign">
+            <span class="check"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary">
+        Activate
+      </button>
+      <button (click)="logout()" class="btn btn-warning">
+        Logout
+      </button>
+    </div>
+  </form>
+</div>

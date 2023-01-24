@@ -20,14 +20,13 @@ export class AuthInterceptor implements HttpInterceptor {
     if (accessToken) {
       request = request.clone({
         setHeaders: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
       });
     }
 
     return next.handle(request).pipe(
-      catchError(err => {
+      catchError((err) => {
         if (err.status === 401) {
           this.authService.logout();
         }
