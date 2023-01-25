@@ -42,4 +42,8 @@ export class ProfileComponent implements OnInit {
     if (!this.userData)
       this.router.navigate(['/'])
   }
+
+  isMyProfile(): boolean {
+    return this.userData?.id === this.userInfo?.userId;
+  }
 }
