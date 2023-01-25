@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { of, ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { Message } from 'src/app/modules/home/messages/messages.component';
 import { AuthService } from './auth.service';
 
@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 })
 export class MessagesService extends Socket {
   private message$: Subject<Message> = new ReplaySubject<Message>();
+  private errorMessage$: Subject<string> = new ReplaySubject<string>();
 
   constructor(
     @Inject('BASE_API_URL') baseUrl: string,
@@ -30,5 +31,13 @@ export class MessagesService extends Socket {
     });
 
     return this.message$.asObservable();
+  };
+
+  getErrorMessage = () => {
+    this.on('exception', (errorMessage: string) => {
+      this.errorMessage$.next(errorMessage);
+    });
+
+    return this.errorMessage$.asObservable();
   };
 }

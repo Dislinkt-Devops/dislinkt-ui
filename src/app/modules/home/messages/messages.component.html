@@ -2,15 +2,12 @@
   <div class="container py-5">
     <div class="row">
       <div class="col-md-6 col-lg-5 col-xl-5 mb-4 mb-md-0 hinherit">
-        <h5 class="font-weight-bold mb-3 text-center text-white">Member</h5>
-
+        <h5 class="font-weight-bold mb-3 text-center text-white">Available Users</h5>
         <div class="card mask-custom">
           <div class="card-body">
-            <ul
-              *ngFor="let user of availableUsers"
-              class="list-unstyled mb-0"
-            >
+            <ul *ngFor="let user of availableUsers" class="list-unstyled mb-0">
               <li
+                *ngIf="!amI(user.id)"
                 class="p-2 border-bottom pointer"
                 style="
                   border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -23,20 +20,21 @@
                 >
                   <div class="d-flex flex-row">
                     <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                      src="{{ getUserImage(user.id) }}"
                       alt="avatar"
                       class="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
-                      width="60"
                     />
                     <div class="pt-1">
-                      <p class="fw-bold mb-0">{{ user.firstName + ' ' + user.lastName }}</p>
+                      <p class="fw-bold mb-0">
+                        {{ user.firstName + " " + user.lastName }}
+                      </p>
                       <p class="small text-white">Lorem ipsum</p>
                     </div>
                   </div>
-                  <div class="pt-1">
+                  <!-- <div class="pt-1">
                     <p class="small text-white mb-1">Just now</p>
                     <span class="badge bg-danger float-end">1</span>
-                  </div>
+                  </div> -->
                 </a>
               </li>
             </ul>
@@ -45,14 +43,15 @@
       </div>
 
       <div *ngIf="receiver" class="col-md-6 col-lg-7 col-xl-7 hinherit">
-        {{ getUserName(receiver) }}
-        <ul class="list-unstyled text-white">
+        <h5 class="font-weight-bold mb-3 text-center text-white">{{ getUserName(receiver) }}</h5>        
+        <ul #scrollMe [scrollTop]="scrollMe.scrollHeight" class="list-unstyled text-white maxh pr-4 ps-child">
           <li
             *ngFor="let message of openedChat"
-            class="d-flex justify-content-between mb-4"
+            class="d-flex justify-content-between"
           >
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+              *ngIf="amI(message.sender)"
+              src="{{ getUserImage(message.sender) }}"
               alt="avatar"
               class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
               width="60"
@@ -62,9 +61,10 @@
                 class="card-header d-flex justify-content-between p-3"
                 style="border-bottom: 1px solid rgba(255, 255, 255, 0.3)"
               >
-                <p class="fw-bold mb-0">{{ message.sender }}</p>
+                <p class="fw-bold mb-0">{{ getUserName(message.sender) }}</p>
                 <p class="text-light small mb-0">
-                  <i class="far fa-clock"></i> {{ message.timestamp | dateAsAgo }}
+                  <i class="far fa-clock"></i>
+                  {{ message.timestamp | dateAsAgo }}
                 </p>
               </div>
               <div class="card-body">
@@ -73,29 +73,36 @@
                 </p>
               </div>
             </div>
+            <img
+              *ngIf="!amI(message.sender)"
+              src="{{ getUserImage(message.sender) }}"
+              alt="avatar"
+              class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+              width="60"
+            />
           </li>
-          <li class="mb-3">
-            <div class="form-outline form-white">
-              <textarea
-                (input)="onTextChange($event)"
-                (keydown.enter)="sendMessage()"
-                [value]="text"
-                class="form-control"
-                id="textAreaExample3"
-                rows="4"
-              ></textarea>
-              <label class="form-label" for="textAreaExample3">Message</label>
-            </div>
-          </li>
-          <button
-            type="button"
-            [disabled]="!text"
-            (click)="sendMessage()"
-            class="btn btn-light btn-lg btn-rounded float-end"
-          >
-            Send
-          </button>
         </ul>
+        <div class="mb-3">
+          <div class="form-outline form-white">
+            <textarea
+              (input)="onTextChange($event)"
+              (keydown.enter)="sendMessage()"
+              [value]="text"
+              class="form-control"
+              id="textAreaExample3"
+              rows="4"
+            ></textarea>
+            <label class="form-label" for="textAreaExample3">Message</label>
+          </div>
+        </div>
+        <button
+          type="button"
+          [disabled]="!text"
+          (click)="sendMessage()"
+          class="btn btn-light btn-lg btn-rounded float-end"
+        >
+          Send
+        </button>
       </div>
     </div>
   </div>
