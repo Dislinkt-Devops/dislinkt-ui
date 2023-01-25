@@ -230,9 +230,7 @@
             <a [routerLink]="">
               <img
                 class="avatar"
-                src="https://xsgames.co/randomusers/avatar.php?g={{
-                  gender.value === 'MALE' ? 'male' : 'female'
-                }}"
+                src="{{getImage()}}"
                 alt="..."
               />
               <h5 class="title">{{ firstName.value }} {{ lastName.value }}</h5>

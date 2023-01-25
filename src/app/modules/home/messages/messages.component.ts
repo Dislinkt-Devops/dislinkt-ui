@@ -5,7 +5,7 @@ import { PersonInfo } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { MessagesService } from 'src/app/core/service/messages.service';
 import { PeopleService } from 'src/app/core/service/people.service';
-import { ToastrUtils } from 'src/app/shared/utils';
+import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 export interface Message {
   sender: string;
@@ -26,17 +26,23 @@ export class MessagesComponent implements OnInit {
   text = '';
   openedChat: Message[] = [];
   availableUsers: PersonInfo[] = [];
+  myProfile!: PersonInfo;
 
   constructor(
     private service: MessagesService,
     private peopleService: PeopleService,
     private authService: AuthService,
-    private toastr: ToastrUtils
+    private toastr: ToastrUtils,
+    private userImagesUtils: UserImagesUtils
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.availableUsers = (
-      await lastValueFrom(this.peopleService.getAllUsers())
+      await lastValueFrom(this.peopleService.getFollowing())
+    ).data;
+
+    this.myProfile = (
+      await lastValueFrom(this.peopleService.getMyProfile())
     ).data;
 
     this.service.getNewMessage().subscribe((message: Message) => {
@@ -78,15 +84,26 @@ export class MessagesComponent implements OnInit {
   }
 
   getUserName(id: string) {
+    if (id === this.myProfile.id) {
+      return this.myProfile.firstName + ' ' + this.myProfile.lastName;
+    }
+
     const user = this.availableUsers.find((u) => u.id === id);
     if (!user) return '';
     return user.firstName + ' ' + user.lastName;
   }
 
   getUserImage(id: string) {
+    if (id === this.myProfile.id) {
+      return this.userImagesUtils.getImageForName(
+        this.myProfile.firstName,
+        this.myProfile.lastName
+      );
+    }
+
     const user = this.availableUsers.find((u) => u.id === id);
     if (!user) return '';
-    return `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&rounded=true&size=60`;
+    return this.userImagesUtils.getImageForName(user.firstName, user.lastName);
   }
 
   amI(userId: string) {

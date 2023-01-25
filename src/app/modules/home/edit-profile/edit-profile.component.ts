@@ -17,7 +17,7 @@ import {
 } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
-import { ToastrUtils } from 'src/app/shared/utils';
+import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 const PASSWORD_PATTERN =
   /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
@@ -58,7 +58,8 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private peopleService: PeopleService,
     private authService: AuthService,
-    private toastr: ToastrUtils
+    private toastr: ToastrUtils,
+    private userImagesUtils: UserImagesUtils,
   ) {
     this.userInfo = authService.getUserInfo();
     this.username.setValue(this.userInfo?.username);
@@ -132,6 +133,14 @@ export class EditProfileComponent implements OnInit {
         this.toastr.showErrorMessageForResponse(err);
       },
     });
+  }
+
+  getImage() {
+    return this.userImagesUtils.getImageForName(
+      this.firstName.value,
+      this.lastName.value,
+      124
+    );
   }
 
   private async reloadBlockedUsers() {
