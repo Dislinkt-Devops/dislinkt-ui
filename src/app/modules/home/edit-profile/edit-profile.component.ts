@@ -53,6 +53,8 @@ export class EditProfileComponent implements OnInit {
   gender = new FormControl('MALE', [Validators.required]);
   bio = new FormControl('', []);
   privacy = new FormControl(true, [Validators.required]);
+  pageLoaded = false;
+
   constructor(
     private peopleService: PeopleService,
     private authService: AuthService,
@@ -76,7 +78,9 @@ export class EditProfileComponent implements OnInit {
       },
     });
 
-    this.reloadBlockedUsers();
+    await this.reloadBlockedUsers();
+
+    this.pageLoaded = true;
   }
 
   async submitAuthSettings() {
@@ -112,14 +116,14 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  unblock(id: string) {
-    this.peopleService.unblock(id).subscribe({
-      next: (val) => {
+  unblock(person: PersonInfo) {
+    this.peopleService.unblock(person.id).subscribe({
+      next: async (val) => {
         const success = val.data;
 
         if (success) {
-          this.toastr.showSuccessMessage('User unblocked successfully!');
-          this.reloadBlockedUsers();
+          await this.reloadBlockedUsers();
+          this.toastr.showSuccessMessage(`User ${person.firstName} ${person.lastName} unblocked successfully!`);
         } else {
           this.toastr.showErrorMessage(['Problem unblocking user!']);
         }
@@ -130,12 +134,8 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  private reloadBlockedUsers() {
-    this.peopleService.myBlocked().subscribe({
-      next: (res) => {
-        this.blockedUsers = res.data;
-      },
-    });
+  private async reloadBlockedUsers() {
+    this.blockedUsers = (await lastValueFrom(this.peopleService.myBlocked())).data;
   }
 
   private matchValidator(matchTo: string, reverse?: boolean): ValidatorFn {

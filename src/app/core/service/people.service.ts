@@ -17,6 +17,10 @@ export class PeopleService {
     return this.http.get<Response<PersonInfo[]>>(`${this.path}`);
   }
 
+  block(id: string) {
+    return this.http.put<Response<Boolean>>(`${this.path}/block/${id}`, {});
+  }
+
   unblock(id: string) {
     return this.http.put<Response<Boolean>>(`${this.path}/unblock/${id}`, {});
   }
