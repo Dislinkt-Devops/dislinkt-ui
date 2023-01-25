@@ -1,11 +1,14 @@
 <div class="content">
-  <div class="row">
+  <div class="row" *ngIf="pageLoaded">
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
           <div class="d-flex justify-content-between">
             <h5 class="title">Posts</h5>
-            <add-post-button *ngIf="isMyProfile()" btnText="Publish Post"></add-post-button>
+            <add-post-button
+              *ngIf="isMyProfile()"
+              btnText="Publish Post"
+            ></add-post-button>
           </div>
         </div>
       </div>
@@ -25,7 +28,7 @@
                 alt="..."
               />
               <h5 class="title">
-                {{ userData?.firstName }} {{ userData?.lastName }}
+                {{ userData.firstName }} {{ userData.lastName }}
               </h5>
             </a>
             <p class="description">
@@ -38,17 +41,34 @@
           </div>
           <p></p>
           <p class="card-description">
-            {{ userData?.bio ? userData?.bio : "About me" }}
+            {{ userData.bio ? userData.bio : "About me" }}
           </p>
         </div>
-        <div *ngIf="isMyProfile()" class="card-footer">
-          <div class="button-container">
+        <div class="card-footer">
+          <div class="button-container" *ngIf="isLoggedIn()">
             <button
               [routerLink]="['/edit-profile']"
               type="button"
-              class="btn btn-primary"
+              class="btn animation-on-hover"
+              *ngIf="isMyProfile()"
             >
               Edit Profile
+            </button>
+            <button
+              (click)="block()"
+              type="button"
+              class="btn animation-on-hover"
+              *ngIf="!isMyProfile() && !isBlocked"
+            >
+              Block
+            </button>
+            <button
+              (click)="unblock()"
+              type="button"
+              class="btn animation-on-hover"
+              *ngIf="!isMyProfile() && isBlocked"
+            >
+              Unblock
             </button>
           </div>
         </div>

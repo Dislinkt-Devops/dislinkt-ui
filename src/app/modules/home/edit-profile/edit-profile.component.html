@@ -1,5 +1,5 @@
 <div class="content">
-  <div class="row">
+  <div class="row" *ngIf="pageLoaded">
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
@@ -268,14 +268,14 @@
         </div>
         <div class="card-body">
           <h5 *ngIf="blockedUsers.length === 0" class="card-title">You don't have blocked users.</h5>
-          <ul *ngIf="blockedUsers.length > 1">
+          <ul>
             <li *ngFor="let blockedUser of blockedUsers">
               {{ blockedUser.firstName }} {{ blockedUser.lastName }}
               <button
                 type="button"
                 rel="tooltip"
                 class="btn btn-danger btn-sm btn-round btn-icon"
-                (click)="unblock(blockedUser.id)"
+                (click)="unblock(blockedUser)"
               >
                 X
               </button>
