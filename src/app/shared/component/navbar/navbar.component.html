@@ -1,122 +1,214 @@
-<nav class="navbar navbar-expand-lg navbar-absolute"
-    [ngClass]="{ 'navbar-transparent': isCollapsed, 'bg-white': !isCollapsed}">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <div class="navbar-toggle d-inline">
-                <button class="navbar-toggler" [ngClass]="{ 'toggled': sideBarOpen }" type="button" (click)="toggleSidebar()">
-                    <span class="navbar-toggler-bar bar1"></span>
-                    <span class="navbar-toggler-bar bar2"></span>
-                    <span class="navbar-toggler-bar bar3"></span>
-                </button>
-            </div>
-            <a class="navbar-brand" href="javascript:void(0)">{{ getRouteTitle() }}</a>
-        </div>
-        <button aria-label="Toggle navigation" class="navbar-toggler" [attr.aria-expanded]="!isCollapsed"
-            aria-controls="collapseExample" id="navigation" type="button"
-            (click)="this.isCollapsed = !this.isCollapsed">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
+<nav
+  class="navbar navbar-expand-lg navbar-absolute"
+  [ngClass]="{ 'navbar-transparent': isCollapsed, 'bg-white': !isCollapsed }"
+>
+  <div class="container-fluid">
+    <div class="navbar-wrapper">
+      <div class="navbar-toggle d-inline">
+        <button
+          class="navbar-toggler"
+          [ngClass]="{ toggled: sideBarOpen }"
+          type="button"
+          (click)="toggleSidebar()"
+        >
+          <span class="navbar-toggler-bar bar1"></span>
+          <span class="navbar-toggler-bar bar2"></span>
+          <span class="navbar-toggler-bar bar3"></span>
         </button>
-        <div class="navbar-collapse" [ngbCollapse]="isCollapsed" id="navigation">
-            <ul class="navbar-nav ml-auto">
-                <li class="search-bar input-group">
-                    <button class="btn btn-link" data-target="#searchModal" data-toggle="modal" id="search-button"
-                        (click)="open(content)">
-                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="magnifying-glass"></fa-icon>
-                        <span class="d-lg-none d-md-block"> Search </span>
-                    </button>
-                </li>
-                <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
-                    <button class="btn btn-primary btn-simple btn-sm" routerLink="/auth/login">
-                        Log in
-                    </button>
-                    <button class="btn btn-link" routerLink="/auth/login">
-                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="right-to-bracket"></fa-icon>
-                        <span class="d-lg-none d-md-block"> Log in </span>
-                    </button>
-                </li>
-                <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
-                    <button class="btn btn-success btn-simple btn-sm" routerLink="/auth/register">
-                        Register in
-                    </button>
-                    <button class="btn btn-link" routerLink="/auth/register">
-                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="user-plus"></fa-icon>
-                        <span class="d-lg-none d-md-block"> Register in </span>
-                    </button>
-                </li>
-                <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
-                    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
-                        <div class="notification d-none d-lg-block d-xl-block"></div>
-                        <fa-icon [fixedWidth]="true" class="nav-fa-icon" icon="bell"></fa-icon>
-                        <p class="d-lg-none not-space">Notifications</p>
-                    </a>
-                    <ul class="dropdown-menu-right dropdown-navbar" ngbDropdownMenu>
-                        <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
-                                Mike John responded to your email
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
-                                You have 5 more tasks
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
-                                Your friend Michael is in town
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
-                                Another notification
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
-                                Another one
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
-                    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
-                        <div class="photo">
-                            <img alt="Profile Photo" src="assets/images/anime3.png" />
-                        </div>
-                        <b class="caret d-none d-lg-block d-xl-block"> </b>
-                        <p class="d-lg-none">You</p>
-                    </a>
-                    <ul class="dropdown-navbar" ngbDropdownMenu>
-                        <li class="nav-link">
-                            <a class="nav-item" [routerLink]="['/profile']" ngbDropdownItem>
-                                Profile
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item" [routerLink]="['/edit-profile']" ngbDropdownItem>
-                                Settings
-                            </a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li class="nav-link">
-                            <a class="nav-item" [routerLink]="['']" (click)="logout()" ngbDropdownItem>
-                                Log out
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="separator d-lg-none"></li>
-            </ul>
-        </div>
+      </div>
+      <a class="navbar-brand" href="javascript:void(0)">{{
+        getRouteTitle()
+      }}</a>
     </div>
+    <button
+      aria-label="Toggle navigation"
+      class="navbar-toggler"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="collapseExample"
+      id="navigation"
+      type="button"
+      (click)="this.isCollapsed = !this.isCollapsed"
+    >
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+    </button>
+    <div class="navbar-collapse" [ngbCollapse]="isCollapsed" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="search-bar input-group">
+          <button
+            class="btn btn-link"
+            data-target="#searchModal"
+            data-toggle="modal"
+            id="search-button"
+            (click)="open(content)"
+          >
+            <fa-icon
+              [fixedWidth]="true"
+              class="nav-fa-icon"
+              icon="magnifying-glass"
+            ></fa-icon>
+            <span class="d-lg-none d-md-block"> Search </span>
+          </button>
+        </li>
+        <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
+          <button
+            class="btn btn-primary btn-simple btn-sm"
+            routerLink="/auth/login"
+          >
+            Log in
+          </button>
+          <button class="btn btn-link" routerLink="/auth/login">
+            <fa-icon
+              [fixedWidth]="true"
+              class="nav-fa-icon"
+              icon="right-to-bracket"
+            ></fa-icon>
+            <span class="d-lg-none d-md-block"> Log in </span>
+          </button>
+        </li>
+        <li class="nav-item li-ath" *ngIf="!isAuthenticated()">
+          <button
+            class="btn btn-success btn-simple btn-sm"
+            routerLink="/auth/register"
+          >
+            Register in
+          </button>
+          <button class="btn btn-link" routerLink="/auth/register">
+            <fa-icon
+              [fixedWidth]="true"
+              class="nav-fa-icon"
+              icon="user-plus"
+            ></fa-icon>
+            <span class="d-lg-none d-md-block"> Register in </span>
+          </button>
+        </li>
+        <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
+          <a
+            class="nav-link"
+            data-toggle="dropdown"
+            href="javascript:void(0)"
+            ngbDropdownToggle
+          >
+            <div class="notification d-none d-lg-block d-xl-block"></div>
+            <fa-icon
+              [fixedWidth]="true"
+              class="nav-fa-icon"
+              icon="bell"
+            ></fa-icon>
+            <p class="d-lg-none not-space">Notifications</p>
+          </a>
+          <ul class="dropdown-menu-right dropdown-navbar" ngbDropdownMenu>
+            <li class="nav-link">
+              <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                Mike John responded to your email
+              </a>
+            </li>
+            <li class="nav-link">
+              <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                You have 5 more tasks
+              </a>
+            </li>
+            <li class="nav-link">
+              <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                Your friend Michael is in town
+              </a>
+            </li>
+            <li class="nav-link">
+              <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                Another notification
+              </a>
+            </li>
+            <li class="nav-link">
+              <a class="nav-item" href="javascript:void(0)" ngbDropdownItem>
+                Another one
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" ngbDropdown *ngIf="isAuthenticated()">
+          <a
+            class="nav-link"
+            data-toggle="dropdown"
+            href="javascript:void(0)"
+            ngbDropdownToggle
+          >
+            <div class="photo">
+              <img alt="Profile Photo" src="assets/images/anime3.png" />
+            </div>
+            <b class="caret d-none d-lg-block d-xl-block"> </b>
+            <p class="d-lg-none">You</p>
+          </a>
+          <ul class="dropdown-navbar" ngbDropdownMenu>
+            <li class="nav-link">
+              <a class="nav-item" [routerLink]="['/profile']" ngbDropdownItem>
+                Profile
+              </a>
+            </li>
+            <li class="nav-link">
+              <a
+                class="nav-item"
+                [routerLink]="['/edit-profile']"
+                ngbDropdownItem
+              >
+                Settings
+              </a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="nav-link">
+              <a
+                class="nav-item"
+                [routerLink]="['']"
+                (click)="logout()"
+                ngbDropdownItem
+              >
+                Log out
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="separator d-lg-none"></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
 <ng-template #content let-modal>
-    <div class="modal-header">
-        <input class="form-control" id="inlineFormInputGroup" placeholder="SEARCH" type="text" />
-        <button aria-label="Close" class="close" type="button" (click)="modal.dismiss('Cross click')">
-            <fa-icon icon="xmark"></fa-icon>
-        </button>
+  <div class="modal-header">
+    <input
+      class="form-control"
+      id="inlineFormInputGroup"
+      placeholder="SEARCH"
+      type="text"
+      [(ngModel)]="searchTxt"
+      (keyup)="triggerSearch()"
+    />
+    <button
+      aria-label="Close"
+      class="close"
+      type="button"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <fa-icon icon="xmark"></fa-icon>
+    </button>
+  </div>
+  <div class="modal-body pt-0">
+    <div class="profile" *ngFor="let profile of searchProfiles">
+      <a (click)="redirect(profile.id)">
+        <div class="d-inline-block">
+          <img
+            class="profile-image"
+            src="https://ui-avatars.com/api/?name={{ profile.firstName }}+{{
+              profile.lastName
+            }}&rounded=true&size=64"
+          />
+        </div>
+        <div class="d-inline-block">
+          <p class="profile-name">
+            {{ profile.firstName }} {{ profile.lastName }}
+          </p>
+        </div>
+      </a>
     </div>
+  </div>
 </ng-template>
