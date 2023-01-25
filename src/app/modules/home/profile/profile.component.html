@@ -22,11 +22,7 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a [routerLink]="">
-              <img
-                class="avatar"
-                src="https://xsgames.co/randomusers/avatar.php?g=male"
-                alt="..."
-              />
+              <img class="avatar" src="{{ getImage() }}" alt="..." />
               <h5 class="title">
                 {{ userData.firstName }} {{ userData.lastName }}
               </h5>
@@ -55,9 +51,19 @@
               Edit Profile
             </button>
             <button
+              (click)="!isFollowed ? follow() : unfollow()"
+              type="button"
+              class="btn {{
+                isFollowed ? '' : 'btn-success'
+              }} animation-on-hover"
+              *ngIf="!isMyProfile() && !isBlocked"
+            >
+              {{ isFollowed ? "Unfollow" : "Follow" }}
+            </button>
+            <button
               (click)="block()"
               type="button"
-              class="btn animation-on-hover"
+              class="btn animation-on-hover btn-danger"
               *ngIf="!isMyProfile() && !isBlocked"
             >
               Block

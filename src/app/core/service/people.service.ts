@@ -17,6 +17,18 @@ export class PeopleService {
     return this.http.get<Response<PersonInfo[]>>(`${this.path}`);
   }
 
+  getFollowing() {
+    return this.http.get<Response<PersonInfo[]>>(`${this.path}/following`);
+  }
+
+  follow(id: string) {
+    return this.http.put<Response<Boolean>>(`${this.path}/follow/${id}`, {});
+  }
+
+  unfollow(id: string) {
+    return this.http.put<Response<Boolean>>(`${this.path}/unfollow/${id}`, {});
+  }
+
   block(id: string) {
     return this.http.put<Response<Boolean>>(`${this.path}/block/${id}`, {});
   }

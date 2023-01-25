@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { PersonInfo, UserInfo } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
-import { ToastrUtils } from 'src/app/shared/utils';
+import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   userInfo: UserInfo | null = null;
   userIdParam: string | null = null;
   isBlocked: Boolean = false;
+  isFollowed: Boolean = false;
   pageLoaded = false;
 
   constructor(
@@ -24,7 +25,8 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     authService: AuthService,
     route: ActivatedRoute,
-    private toastr: ToastrUtils
+    private toastr: ToastrUtils,
+    private userImagesUtils: UserImagesUtils
   ) {
     this.userInfo = authService.getUserInfo();
     this.userIdParam = route.snapshot.queryParamMap.get('id');
@@ -52,9 +54,55 @@ export class ProfileComponent implements OnInit {
         .data;
 
       this.isBlocked = !!blockedUsers.find((u) => u.id === this.userData.id);
+
+      const followingUsers = (
+        await lastValueFrom(this.peopleService.getFollowing())
+      ).data;
+
+      this.isFollowed = !!followingUsers.find((u) => u.id === this.userData.id);
     }
 
     this.pageLoaded = true;
+  }
+
+  follow() {
+    this.peopleService.follow(this.userData.id).subscribe({
+      next: (val) => {
+        const success = val.data;
+
+        if (success) {
+          this.toastr.showSuccessMessage(
+            `User ${this.userData.firstName} ${this.userData.lastName} followed successfully!`
+          );
+          this.isFollowed = !this.isFollowed;
+        } else {
+          this.toastr.showErrorMessage(['Problem following user!']);
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastr.showErrorMessageForResponse(err);
+      },
+    });
+  }
+
+  unfollow() {
+    this.peopleService.unfollow(this.userData.id).subscribe({
+      next: (val) => {
+        const success = val.data;
+
+        if (success) {
+          this.toastr.showSuccessMessage(
+            `User ${this.userData.firstName} ${this.userData.lastName} unfollowed successfully!`
+          );
+          this.isFollowed = !this.isFollowed;
+        } else {
+          this.toastr.showErrorMessage(['Problem unfollowing user!']);
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastr.showErrorMessageForResponse(err);
+      },
+    });
   }
 
   unblock() {
@@ -63,8 +111,11 @@ export class ProfileComponent implements OnInit {
         const success = val.data;
 
         if (success) {
-          this.toastr.showSuccessMessage(`User ${this.userData.firstName} ${this.userData.lastName} unblocked successfully!`);
+          this.toastr.showSuccessMessage(
+            `User ${this.userData.firstName} ${this.userData.lastName} unblocked successfully!`
+          );
           this.isBlocked = false;
+          this.isFollowed = false;
         } else {
           this.toastr.showErrorMessage(['Problem unblocking user!']);
         }
@@ -81,7 +132,9 @@ export class ProfileComponent implements OnInit {
         const success = val.data;
 
         if (success) {
-          this.toastr.showSuccessMessage(`User ${this.userData.firstName} ${this.userData.lastName} blocked successfully!`);
+          this.toastr.showSuccessMessage(
+            `User ${this.userData.firstName} ${this.userData.lastName} blocked successfully!`
+          );
           this.isBlocked = true;
         } else {
           this.toastr.showErrorMessage(['Problem blocking user!']);
@@ -99,5 +152,13 @@ export class ProfileComponent implements OnInit {
 
   isLoggedIn(): boolean {
     return !!this.userInfo?.userId;
+  }
+
+  getImage() {
+    return this.userImagesUtils.getImageForName(
+      this.userData.firstName,
+      this.userData.lastName,
+      124
+    );
   }
 }
