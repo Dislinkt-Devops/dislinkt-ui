@@ -2,9 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { PersonInfo, UserInfo } from 'src/app/core/model';
+import { PersonInfo, Post, UserInfo } from 'src/app/core/model';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
+import { PostsService } from 'src/app/core/service/posts.service';
 import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 @Component({
@@ -19,6 +20,7 @@ export class ProfileComponent implements OnInit {
   isBlocked: Boolean = false;
   isFollowed: Boolean = false;
   pageLoaded = false;
+  posts: Post[] = [];
 
   constructor(
     private peopleService: PeopleService,
@@ -26,27 +28,16 @@ export class ProfileComponent implements OnInit {
     authService: AuthService,
     route: ActivatedRoute,
     private toastr: ToastrUtils,
-    private userImagesUtils: UserImagesUtils
+    private userImagesUtils: UserImagesUtils,
+    private postsService: PostsService
   ) {
     this.userInfo = authService.getUserInfo();
     this.userIdParam = route.snapshot.queryParamMap.get('id');
   }
 
   async ngOnInit(): Promise<void> {
-    if (this.userIdParam) {
-      // temp solution
-      const allUsers = (await lastValueFrom(this.peopleService.getAllUsers()))
-        .data;
-
-      const user = allUsers.find((user: any) => user.id === this.userIdParam);
-      if (user) this.userData = user;
-      else this.router.navigate(['/']);
-    } else if (this.userInfo?.userId) {
-      this.userData = (
-        await lastValueFrom(this.peopleService.getMyProfile())
-      ).data;
-    }
-
+    const id = this.userIdParam || this.userInfo?.userId;
+    this.userData = (await lastValueFrom(this.peopleService.getProfile(id))).data;
     if (!this.userData) this.router.navigate(['/']);
 
     if (this.isLoggedIn()) {
@@ -62,7 +53,20 @@ export class ProfileComponent implements OnInit {
       this.isFollowed = !!followingUsers.find((u) => u.id === this.userData.id);
     }
 
+    this.refresh(true);
+
     this.pageLoaded = true;
+  }
+
+  refresh(value: boolean) {
+    if (value) {
+      const id = this.userIdParam || this.userInfo?.userId;
+      this.postsService.getProfilePosts(id).subscribe({
+        next: (resp) => {
+          this.posts = resp.data.sort((x, y) => y.createdAt - x.createdAt);
+        },
+      });
+    }
   }
 
   follow() {

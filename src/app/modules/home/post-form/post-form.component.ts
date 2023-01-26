@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostForm } from 'src/app/core/model';
@@ -13,6 +13,7 @@ import { ToastrUtils } from 'src/app/shared/utils';
 })
 export class PostFormComponent implements OnInit {
   @Input() btnText!: string;
+  @Output() added = new EventEmitter<boolean>();
   text = new FormControl('', [Validators.required]);
   imageUrl = new FormControl('', []);
 
@@ -54,6 +55,7 @@ export class PostFormComponent implements OnInit {
         this.fg.reset();
         this.toastr.showSuccessMessage('Post successfully added!');
         this.modalService.dismissAll();
+        this.added.emit(true);
       },
       error: (err: HttpErrorResponse) => {
         this.toastr.showErrorMessageForResponse(err);

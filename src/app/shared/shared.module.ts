@@ -15,18 +15,23 @@ import {
   faXmark,
   faComments,
   faRightToBracket,
-  faUserPlus
+  faUserPlus,
+  faThumbsUp,
+  faThumbsDown,
+  faComment
 } from '@fortawesome/free-solid-svg-icons';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DateAsAgoPipe } from './pipes/date-as-ago.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PostComponent } from './component/post/post.component';
 
 @NgModule({
   declarations: [
     SidebarComponent,
     NavbarComponent,
     DateAsAgoPipe,
+    PostComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +39,7 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(), // ToastrModule added
   ],
   exports: [
@@ -42,6 +48,7 @@ import { FormsModule } from '@angular/forms';
     FontAwesomeModule,
     RouterModule,
     DateAsAgoPipe,
+    PostComponent,
   ]
 })
 export class SharedModule {
@@ -56,7 +63,10 @@ export class SharedModule {
       faXmark,
       faComments,
       faRightToBracket,
-      faUserPlus   
+      faUserPlus,
+      faThumbsUp,
+      faThumbsDown,
+      faComment
     );
   }
 }

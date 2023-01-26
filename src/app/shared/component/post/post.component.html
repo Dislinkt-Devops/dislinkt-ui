@@ -1,0 +1,139 @@
+<div class="container py-2">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-12 col-lg-10 col-xl-8">
+      <div class="card bg-dark">
+        <div class="card-body">
+          <div class="d-flex flex-start align-items-center">
+            <img
+              class="rounded-circle shadow-1-strong me-3"
+              src="https://ui-avatars.com/api/?name={{
+                post.personInfo.firstName
+              }}+{{ post.personInfo.lastName }}&rounded=true&size=64"
+              alt="avatar"
+              width="60"
+              height="60"
+              (click)="routeToProfile(post.personId)"
+            />
+            <div>
+              <h6 class="fw-bold text-primary mb-1">
+                {{ post.personInfo.firstName }} {{ post.personInfo.lastName }}
+              </h6>
+              <p class="text-muted small mb-0">
+                {{ post.createdAt | date : "medium" }}
+              </p>
+            </div>
+          </div>
+
+          <p class="mt-3 mb-4 pb-2">
+            {{ post.text }}
+          </p>
+
+          <div class="d-flex justify-content-start">
+            <button
+              class="d-flex align-items-center me-3 inactive"
+              [disabled]="!canInteract"
+              [ngClass]="{
+                'inactive': !isLiked,
+                'active': isLiked
+              }"
+              (click)="like()"
+            >
+              <fa-icon icon="thumbs-up"></fa-icon>
+              <p class="ml-2 mb-0">({{ countLikes() }}) Like</p>
+            </button>
+            <button
+              class="d-flex align-items-center me-3 inactive"
+              [disabled]="!canInteract"
+              [ngClass]="{
+                'inactive': !isDisliked,
+                'active': isDisliked
+              }"
+              (click)="dislike()"
+            >
+              <fa-icon icon="thumbs-down"></fa-icon>
+              <p class="ml-2 mb-0">({{ countDislikes() }}) Dislike</p>
+            </button>
+            <button
+              class="d-flex align-items-center me-3 inactive"
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              aria-controls="collapseExample"
+              [ngClass]="{
+                'inactive': isCollapsed,
+                'active': !isCollapsed
+              }"
+            >
+              <fa-icon icon="comment"></fa-icon>
+              <p class="ml-2 mb-0">Comment</p>
+            </button>
+          </div>
+        </div>
+        <div class="card-footer bg-primary py-3 border-0">
+          <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+            <div
+              class="d-flex flex-start w-100"
+              *ngFor="let comment of post.comments"
+            >
+              <img
+                class="rounded-circle shadow-1-strong me-3"
+                src="https://ui-avatars.com/api/?name={{
+                  comment.personInfo.firstName
+                }}+{{ comment.personInfo.lastName }}&rounded=true&size=64"
+                alt="avatar"
+                width="40"
+                height="40"
+                (click)="routeToProfile(comment.personId)"
+              />
+              <div class="form-outline w-100">
+                <h6 class="fw-bold mb-1">
+                  {{ comment.personInfo.firstName }}
+                  {{ comment.personInfo.lastName }}
+                </h6>
+                <p class="mt-3">
+                  {{ comment.text }}
+                </p>
+                <hr style="border-color: black; border-width: 2px" />
+              </div>
+            </div>
+            <div *ngIf="canInteract">
+              <div class="d-flex flex-start w-100">
+                <img
+                  class="rounded-circle shadow-1-strong me-3"
+                  src="https://ui-avatars.com/api/?name={{ firstName }}+{{
+                    lastName
+                  }}&rounded=true&size=64"
+                  alt="avatar"
+                  width="40"
+                  height="40"
+                />
+                <div class="form-outline w-100">
+                  <textarea
+                    class="form-control"
+                    id="textAreaExample"
+                    rows="4"
+                    [formControl]="commentText"
+                  ></textarea>
+                  <label class="form-label" for="textAreaExample"
+                    >Place your comment</label
+                  >
+                </div>
+              </div>
+              <div class="float-end mt-2 pt-1">
+                <button type="button" class="btn btn-primary btn-sm" (click)="comment()">
+                  Post comment
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  (click)="isCollapsed = !isCollapsed"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

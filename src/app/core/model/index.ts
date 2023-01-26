@@ -7,3 +7,6 @@ export * from './profile-form';
 export * from './person-info';
 export * from './response';
 export * from './post-form';
+export * from './post';
+export * from './comment';
+export * from './reaction';

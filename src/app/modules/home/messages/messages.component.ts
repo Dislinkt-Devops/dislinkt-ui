@@ -8,6 +8,7 @@ import { PeopleService } from 'src/app/core/service/people.service';
 import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 export interface Message {
+  id: string;
   sender: string;
   receiver: string;
   content: string;
@@ -46,8 +47,13 @@ export class MessagesComponent implements OnInit {
     ).data;
 
     this.service.getNewMessage().subscribe((message: Message) => {
-      if (message) this.openedChat.push(message);
-      this.scrollToBottom();
+      if (
+        message &&
+        !this.openedChat.find((x) => x.id === message.id)
+      ) {
+        this.openedChat.push(message);
+        this.scrollToBottom();
+      }
     });
 
     this.service.getErrorMessage().subscribe((errorMessage: string) => {
