@@ -2,10 +2,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { Attribute, PersonInfo, Type, UserInfo } from 'src/app/core/model';
+import {
+  Attribute,
+  PersonInfo,
+  Type,
+  UserInfo,
+  Post,
+} from 'src/app/core/model';
 import { AttributesService } from 'src/app/core/service/attributes.service';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
+import { PostsService } from 'src/app/core/service/posts.service';
 import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
 
 @Component({
@@ -22,6 +29,7 @@ export class ProfileComponent implements OnInit {
   attributes: Attribute[] = [];
   attributeTypes = [Type.SKILLS, Type.EDUCATION, Type.EXPERIENCE];
   pageLoaded = false;
+  posts: Post[] = [];
 
   constructor(
     private peopleService: PeopleService,
@@ -30,28 +38,23 @@ export class ProfileComponent implements OnInit {
     authService: AuthService,
     route: ActivatedRoute,
     private toastr: ToastrUtils,
-    private userImagesUtils: UserImagesUtils
+    private userImagesUtils: UserImagesUtils,
+    private postsService: PostsService
   ) {
     this.userInfo = authService.getUserInfo();
     this.userIdParam = route.snapshot.queryParamMap.get('id');
   }
 
   async ngOnInit(): Promise<void> {
-    if (this.userIdParam) {
-      // temp solution
-      const allUsers = (await lastValueFrom(this.peopleService.getAllUsers()))
-        .data;
-
-      const user = allUsers.find((user: any) => user.id === this.userIdParam);
-      if (user) this.userData = user;
-      else this.router.navigate(['/']);
-    } else if (this.userInfo?.userId) {
+    const id = this.userIdParam || this.userInfo?.userId;
+    try {
       this.userData = (
-        await lastValueFrom(this.peopleService.getMyProfile())
+        await lastValueFrom(this.peopleService.getProfile(id))
       ).data;
+      if (!this.userData) this.router.navigate(['/']);
+    } catch (err) {
+      this.router.navigate(['/']);
     }
-
-    if (!this.userData) this.router.navigate(['/']);
 
     if (this.isLoggedIn()) {
       const blockedUsers = (await lastValueFrom(this.peopleService.myBlocked()))
@@ -66,13 +69,31 @@ export class ProfileComponent implements OnInit {
       this.isFollowed = !!followingUsers.find((u) => u.id === this.userData.id);
     }
 
-    this.attributes = (
-      await lastValueFrom(
-        this.attributesService.findByPerson(this.userInfo?.userId || '')
-      )
-    ).data;
+    this.refresh(true);
 
     this.pageLoaded = true;
+  }
+
+  async refresh(value: boolean) {
+    if (value) {
+      const id = this.userIdParam || this.userInfo?.userId;
+
+      try {
+        this.attributes = (
+          await lastValueFrom(this.attributesService.findByPerson(id))
+        ).data;
+      } catch (err) {
+        this.attributes = [];
+      }
+      this.postsService.getProfilePosts(id).subscribe({
+        next: (resp) => {
+          this.posts = resp.data.sort((x, y) => y.createdAt - x.createdAt);
+        },
+        error: () => {
+          this.posts = [];
+        },
+      });
+    }
   }
 
   follow() {
@@ -85,6 +106,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} followed successfully!`
           );
           this.isFollowed = !this.isFollowed;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem following user!']);
         }
@@ -105,6 +127,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} unfollowed successfully!`
           );
           this.isFollowed = !this.isFollowed;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem unfollowing user!']);
         }
@@ -126,6 +149,7 @@ export class ProfileComponent implements OnInit {
           );
           this.isBlocked = false;
           this.isFollowed = false;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem unblocking user!']);
         }
@@ -146,6 +170,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} blocked successfully!`
           );
           this.isBlocked = true;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem blocking user!']);
         }

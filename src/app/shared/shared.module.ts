@@ -19,6 +19,9 @@ import {
   faComments,
   faRightToBracket,
   faUserPlus,
+  faThumbsUp,
+  faThumbsDown,
+  faComment,
   faPen,
   faPlus,
   faTrash,
@@ -26,16 +29,23 @@ import {
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DateAsAgoPipe } from './pipes/date-as-ago.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PostComponent } from './component/post/post.component';
 
 @NgModule({
-  declarations: [SidebarComponent, NavbarComponent, DateAsAgoPipe],
+  declarations: [
+    SidebarComponent,
+    NavbarComponent,
+    DateAsAgoPipe,
+    PostComponent,
+  ],
   imports: [
     CommonModule,
     FontAwesomeModule,
     RouterModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(), // ToastrModule added
   ],
   exports: [
@@ -44,7 +54,8 @@ import { FormsModule } from '@angular/forms';
     FontAwesomeModule,
     RouterModule,
     DateAsAgoPipe,
-  ],
+    PostComponent,
+  ]
 })
 export class SharedModule {
   constructor(library: FaIconLibrary) {
@@ -59,6 +70,9 @@ export class SharedModule {
       faComments,
       faRightToBracket,
       faUserPlus,
+      faThumbsUp,
+      faThumbsDown,
+      faComment,
       faPen,
       faPlus,
       faTrash

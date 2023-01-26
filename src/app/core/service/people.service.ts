@@ -45,6 +45,10 @@ export class PeopleService {
     return this.http.get<Response<PersonInfo>>(`${this.path}/myProfile`);
   }
 
+  getProfile(userId: string | undefined) {
+    return this.http.get<Response<PersonInfo>>(`${this.path}/profile/${userId}`);
+  }
+
   updateProfile(payload: ProfileForm) {
     return this.http.put<Response<PersonInfo>>(`${this.path}/myProfile`, payload);
   }

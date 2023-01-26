@@ -10,8 +10,8 @@ export class AttributesService {
 
   constructor(private http: HttpClient) {}
 
-  findByPerson(userId: string) {
-    return this.http.get<Response<Attribute[]>>(`${this.path}/${userId}`);
+  findByPerson(userId: string | undefined) {
+    return this.http.get<Response<Attribute[]>>(`${this.path}/profile/${userId}`);
   }
 
   addAttribute(attribute: Attribute) {

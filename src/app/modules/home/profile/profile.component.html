@@ -8,8 +8,18 @@
             <add-post-button
               *ngIf="isMyProfile()"
               btnText="Publish Post"
+              (added)="refresh($event)"
             ></add-post-button>
           </div>
+        </div>
+        <div class="card-body">
+          <ng-container *ngFor="let post of posts">
+            <app-post
+              [post]="post"
+              [firstName]="userData.firstName"
+              [lastName]="userData.lastName"
+            ></app-post>
+          </ng-container>
         </div>
       </div>
     </div>
