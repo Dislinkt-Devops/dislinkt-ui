@@ -8,16 +8,21 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
 import {
+  Attribute,
   PersonInfo,
   ProfileForm,
   RegisterForm,
+  Type,
   UserInfo,
 } from 'src/app/core/model';
+import { AttributesService } from 'src/app/core/service/attributes.service';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
 import { ToastrUtils, UserImagesUtils } from 'src/app/shared/utils';
+import { EntryModalComponent } from '../entry-modal/entry-modal.component';
 
 const PASSWORD_PATTERN =
   /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
@@ -28,6 +33,7 @@ const PASSWORD_PATTERN =
   styleUrls: ['./edit-profile.component.scss'],
 })
 export class EditProfileComponent implements OnInit {
+  attributes: Attribute[] = [];
   blockedUsers: PersonInfo[] = [];
   userInfo: UserInfo | null = null;
   username = new FormControl('', [
@@ -54,12 +60,15 @@ export class EditProfileComponent implements OnInit {
   bio = new FormControl('', []);
   privacy = new FormControl(true, [Validators.required]);
   pageLoaded = false;
+  attributeTypes = [Type.SKILLS, Type.EDUCATION, Type.EXPERIENCE];
 
   constructor(
     private peopleService: PeopleService,
     private authService: AuthService,
+    private attributesService: AttributesService,
     private toastr: ToastrUtils,
     private userImagesUtils: UserImagesUtils,
+    private modalService: NgbModal
   ) {
     this.userInfo = authService.getUserInfo();
     this.username.setValue(this.userInfo?.username);
@@ -72,16 +81,31 @@ export class EditProfileComponent implements OnInit {
         this.firstName.setValue(res.data.firstName);
         this.lastName.setValue(res.data.lastName);
         this.phoneNumber.setValue(res.data.phoneNumber);
-        this.dateOfBirth.setValue(formatDate(res.data.dateOfBirth, 'yyyy-MM-dd', 'en'));
+        this.dateOfBirth.setValue(
+          formatDate(res.data.dateOfBirth, 'yyyy-MM-dd', 'en')
+        );
         this.gender.setValue(res.data.gender);
         this.bio.setValue(res.data.bio);
         this.privacy.setValue(res.data.privacy);
       },
     });
 
+    await this.loadAttributes();
     await this.reloadBlockedUsers();
 
     this.pageLoaded = true;
+  }
+
+  filteredAttributes(type: string) {
+    return this.attributes.filter((attr) => attr.attributeType === type);
+  }
+
+  private async loadAttributes() {
+    this.attributes = (
+      await lastValueFrom(
+        this.attributesService.findByPerson(this.userInfo?.userId || '')
+      )
+    ).data;
   }
 
   async submitAuthSettings() {
@@ -124,7 +148,9 @@ export class EditProfileComponent implements OnInit {
 
         if (success) {
           await this.reloadBlockedUsers();
-          this.toastr.showSuccessMessage(`User ${person.firstName} ${person.lastName} unblocked successfully!`);
+          this.toastr.showSuccessMessage(
+            `User ${person.firstName} ${person.lastName} unblocked successfully!`
+          );
         } else {
           this.toastr.showErrorMessage(['Problem unblocking user!']);
         }
@@ -143,8 +169,49 @@ export class EditProfileComponent implements OnInit {
     );
   }
 
+  remove(attribute: Attribute) {
+    this.attributesService.deleteAttribute(attribute).subscribe({
+      next: () => {
+        this.toastr.showSuccessMessage(`Attribute ${attribute.attributeName} successfully deleted!`)
+        this.loadAttributes();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastr.showErrorMessageForResponse(err);
+      }
+    })
+  }
+
+  open(type: string, existing?: Attribute) {
+    const modalRef = this.modalService.open(EntryModalComponent, {
+      windowClass: 'modal-black',
+    });
+    modalRef.componentInstance.attributeType = type;
+    modalRef.componentInstance.existing = existing;
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry: boolean) => {
+      if (receivedEntry === true) {
+        this.loadAttributes();
+      }
+      modalRef.close();
+    });
+  }
+
+  getEntryTitle(type: Type) {
+    switch (type) {
+      case Type.EDUCATION:
+        return 'Education';
+      case Type.EXPERIENCE:
+        return 'Experience';
+      case Type.SKILLS:
+        return 'Skill';
+      default:
+        return 'Entry';
+    }
+  }
+
   private async reloadBlockedUsers() {
-    this.blockedUsers = (await lastValueFrom(this.peopleService.myBlocked())).data;
+    this.blockedUsers = (
+      await lastValueFrom(this.peopleService.myBlocked())
+    ).data;
   }
 
   private matchValidator(matchTo: string, reverse?: boolean): ValidatorFn {

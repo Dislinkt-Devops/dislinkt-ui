@@ -79,6 +79,27 @@
           </div>
         </div>
       </div>
+      <div *ngFor="let type of attributeTypes">
+      <div *ngIf="filteredAttributes(type).length > 0" class="card">
+        <div class="card-header">
+            <h4 class="title">
+              {{ type.charAt(0) + type.toLowerCase().slice(1) }}
+            </h4>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let attribute of filteredAttributes(type)">
+            <div class="card bg-dark">
+              <div class="card-header">
+                  <h5 class="title">{{ attribute.attributeName }}</h5>
+              </div>
+              <div class="card-body">
+                <p>{{ attribute.attributeValue }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </div>

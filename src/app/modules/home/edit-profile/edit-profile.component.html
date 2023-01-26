@@ -66,66 +66,17 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="inputPassword">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="inputPassword"
-                    placeholder="Password"
-                    [formControl]="password"
-                    [ngClass]="{
-                      'is-invalid': password.touched && password.errors
-                    }"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    *ngIf="password.touched && password.errors"
-                  >
-                    <div *ngIf="password.errors['required']">
-                      Please enter a password.
-                    </div>
-                    <div *ngIf="password.errors['minlength']">
-                      Password must have at least 4 characters.
-                    </div>
-                    <div *ngIf="password.errors['pattern']">
-                      Password must have at least one lowercase, one uppercase
-                      letter and one special character.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="confirmPassword">Confirm password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="confirmPassword"
-                    placeholder="Password"
-                    [formControl]="confirmPassword"
-                    [ngClass]="{
-                      'is-invalid':
-                        confirmPassword.touched && confirmPassword.errors
-                    }"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    *ngIf="confirmPassword.touched && confirmPassword.errors"
-                  >
-                    <div *ngIf="confirmPassword.errors['required']">
-                      Please confirm a password.
-                    </div>
-                    <div *ngIf="confirmPassword.errors['matching']">
-                      Password must match.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <button type="submit" class="btn btn-primary" [disabled]="!(username.touched || email.touched) || (username.errors || email.errors)">Apply Changes</button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="
+                !(username.touched || email.touched) ||
+                username.errors ||
+                email.errors
+              "
+            >
+              Apply Changes
+            </button>
           </form>
         </div>
       </div>
@@ -228,11 +179,7 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a [routerLink]="">
-              <img
-                class="avatar"
-                src="{{getImage()}}"
-                alt="..."
-              />
+              <img class="avatar" src="{{ getImage() }}" alt="..." />
               <h5 class="title">{{ firstName.value }} {{ lastName.value }}</h5>
             </a>
             <p class="description">
@@ -265,22 +212,110 @@
           <h5 class="title">Block list</h5>
         </div>
         <div class="card-body">
-          <h5 *ngIf="blockedUsers.length === 0" class="card-title">You don't have blocked users.</h5>
+          <h5 *ngIf="blockedUsers.length === 0" class="card-title">
+            You don't have blocked users.
+          </h5>
           <ul>
             <li *ngFor="let blockedUser of blockedUsers">
               {{ blockedUser.firstName }} {{ blockedUser.lastName }}
-              <button
-                type="button"
-                rel="tooltip"
-                class="btn btn-danger btn-sm btn-round btn-icon"
+              <fa-icon
+                class="ml-3"
+                style="cursor: pointer"
                 (click)="unblock(blockedUser)"
-              >
-                X
-              </button>
+                icon="trash"
+              ></fa-icon>
             </li>
           </ul>
+        </div>
+      </div>
+      <div class="card" *ngFor="let type of attributeTypes">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <h4 class="title">
+              {{ type.charAt(0) + type.toLowerCase().slice(1) }}
+            </h4>
+            <fa-icon
+              style="cursor: pointer"
+              (click)="open(type)"
+              icon="plus"
+            ></fa-icon>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let attribute of filteredAttributes(type)">
+            <p></p>
+            <div class="card bg-dark">
+              <div class="card-header">
+                <div class="d-flex justify-content-between">
+                  <h5 class="title">{{ attribute.attributeName }}</h5>
+                  <div>
+                    <fa-icon
+                      style="cursor: pointer"
+                      (click)="open(type, attribute)"
+                      icon="pen"
+                    ></fa-icon>
+                    <fa-icon
+                      class="ml-3"
+                      style="cursor: pointer"
+                      (click)="remove(attribute)"
+                      icon="trash"
+                    ></fa-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <p>{{ attribute.attributeValue }}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="exampleModalLabel">Add Entry</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+      <i class="tim-icons icon-simple-remove"></i>
+    </button>
+  </div>
+  <form>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="inputUsername">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="content"
+          rows="3"
+          placeholder="Post content"
+          formControlName="text"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputUsername">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          id="content"
+          rows="3"
+          placeholder="Post content"
+          formControlName="text"
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="modal.dismiss('Cross click')"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button type="submit" class="btn btn-primary">Add Post</button>
+    </div>
+  </form>
+</ng-template>
