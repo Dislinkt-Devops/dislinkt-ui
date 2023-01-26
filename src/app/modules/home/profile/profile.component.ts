@@ -2,7 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { Attribute, PersonInfo, Type, UserInfo, Post } from 'src/app/core/model';
+import {
+  Attribute,
+  PersonInfo,
+  Type,
+  UserInfo,
+  Post,
+} from 'src/app/core/model';
 import { AttributesService } from 'src/app/core/service/attributes.service';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
@@ -41,8 +47,14 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const id = this.userIdParam || this.userInfo?.userId;
-    this.userData = (await lastValueFrom(this.peopleService.getProfile(id))).data;
-    if (!this.userData) this.router.navigate(['/']);
+    try {
+      this.userData = (
+        await lastValueFrom(this.peopleService.getProfile(id))
+      ).data;
+      if (!this.userData) this.router.navigate(['/']);
+    } catch (err) {
+      this.router.navigate(['/']);
+    }
 
     if (this.isLoggedIn()) {
       const blockedUsers = (await lastValueFrom(this.peopleService.myBlocked()))
@@ -58,21 +70,27 @@ export class ProfileComponent implements OnInit {
     }
 
     this.refresh(true);
-    this.attributes = (
-      await lastValueFrom(
-        this.attributesService.findByPerson(this.userInfo?.userId || '')
-      )
-    ).data;
 
     this.pageLoaded = true;
   }
 
-  refresh(value: boolean) {
+  async refresh(value: boolean) {
     if (value) {
       const id = this.userIdParam || this.userInfo?.userId;
+
+      try {
+        this.attributes = (
+          await lastValueFrom(this.attributesService.findByPerson(id))
+        ).data;
+      } catch (err) {
+        this.attributes = [];
+      }
       this.postsService.getProfilePosts(id).subscribe({
         next: (resp) => {
           this.posts = resp.data.sort((x, y) => y.createdAt - x.createdAt);
+        },
+        error: () => {
+          this.posts = [];
         },
       });
     }
@@ -88,6 +106,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} followed successfully!`
           );
           this.isFollowed = !this.isFollowed;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem following user!']);
         }
@@ -108,6 +127,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} unfollowed successfully!`
           );
           this.isFollowed = !this.isFollowed;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem unfollowing user!']);
         }
@@ -129,6 +149,7 @@ export class ProfileComponent implements OnInit {
           );
           this.isBlocked = false;
           this.isFollowed = false;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem unblocking user!']);
         }
@@ -149,6 +170,7 @@ export class ProfileComponent implements OnInit {
             `User ${this.userData.firstName} ${this.userData.lastName} blocked successfully!`
           );
           this.isBlocked = true;
+          this.refresh(true);
         } else {
           this.toastr.showErrorMessage(['Problem blocking user!']);
         }
