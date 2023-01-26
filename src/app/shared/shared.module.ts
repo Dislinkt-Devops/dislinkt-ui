@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {
+  FontAwesomeModule,
+  FaIconLibrary,
+} from '@fortawesome/angular-fontawesome';
 
-import { 
-  faEye, 
+import {
+  faEye,
   faEyeSlash,
-  faUserGroup, 
+  faUserGroup,
   faNewspaper,
   faMagnifyingGlass,
   faBell,
@@ -18,7 +21,10 @@ import {
   faUserPlus,
   faThumbsUp,
   faThumbsDown,
-  faComment
+  faComment,
+  faPen,
+  faPlus,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -54,9 +60,9 @@ import { PostComponent } from './component/post/post.component';
 export class SharedModule {
   constructor(library: FaIconLibrary) {
     library.addIcons(
-      faEye, 
+      faEye,
       faEyeSlash,
-      faUserGroup, 
+      faUserGroup,
       faNewspaper,
       faMagnifyingGlass,
       faBell,
@@ -66,7 +72,10 @@ export class SharedModule {
       faUserPlus,
       faThumbsUp,
       faThumbsDown,
-      faComment
+      faComment,
+      faPen,
+      faPlus,
+      faTrash
     );
   }
 }

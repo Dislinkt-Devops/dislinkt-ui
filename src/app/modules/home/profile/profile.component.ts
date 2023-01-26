@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { PersonInfo, Post, UserInfo } from 'src/app/core/model';
+import { Attribute, PersonInfo, Type, UserInfo, Post } from 'src/app/core/model';
+import { AttributesService } from 'src/app/core/service/attributes.service';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { PeopleService } from 'src/app/core/service/people.service';
 import { PostsService } from 'src/app/core/service/posts.service';
@@ -19,12 +20,15 @@ export class ProfileComponent implements OnInit {
   userIdParam: string | null = null;
   isBlocked: Boolean = false;
   isFollowed: Boolean = false;
+  attributes: Attribute[] = [];
+  attributeTypes = [Type.SKILLS, Type.EDUCATION, Type.EXPERIENCE];
   pageLoaded = false;
   posts: Post[] = [];
 
   constructor(
     private peopleService: PeopleService,
     private router: Router,
+    private attributesService: AttributesService,
     authService: AuthService,
     route: ActivatedRoute,
     private toastr: ToastrUtils,
@@ -54,6 +58,11 @@ export class ProfileComponent implements OnInit {
     }
 
     this.refresh(true);
+    this.attributes = (
+      await lastValueFrom(
+        this.attributesService.findByPerson(this.userInfo?.userId || '')
+      )
+    ).data;
 
     this.pageLoaded = true;
   }
@@ -164,5 +173,9 @@ export class ProfileComponent implements OnInit {
       this.userData.lastName,
       124
     );
+  }
+
+  filteredAttributes(type: string) {
+    return this.attributes.filter((attr) => attr.attributeType === type);
   }
 }

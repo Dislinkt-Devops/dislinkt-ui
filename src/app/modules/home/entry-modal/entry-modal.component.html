@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h3 class="modal-title" id="exampleModalLabel">
+    {{ existing ? "Edit" : "Add" }} {{ getTitle() }}
+  </h3>
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    <i class="tim-icons icon-simple-remove"></i>
+  </button>
+</div>
+<form (ngSubmit)="addEntry()">
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="inputUsername">Attribute Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="content"
+        rows="3"
+        placeholder="Title"
+				[formControl]="attributeName"
+				required
+      />
+    </div>
+    <div class="form-group">
+      <label for="inputUsername">Attribute Value</label>
+      <textarea
+        class="form-control"
+        id="content"
+        rows="3"
+        placeholder="Text"
+				[formControl]="attributeValue"
+				required
+      ></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-dismiss="modal"
+      (click)="passBack(false)"
+    >
+      Close
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="!attributeName.valid || !attributeValue.valid">
+      Submit
+    </button>
+  </div>
+</form>

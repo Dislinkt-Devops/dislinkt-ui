@@ -1,14 +1,14 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToastrUtils {
-	constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService) {}
 
-	showSuccessMessage(message: string): void {
+  showSuccessMessage(message: string): void {
     this.toastr.success(message, '', {
       closeButton: false,
       timeOut: 3000,
@@ -27,15 +27,18 @@ export class ToastrUtils {
     });
   }
 
-	showErrorMessageForResponse(err: HttpErrorResponse) {
-		let messages: string[] = [];
-		const errMsg: string | string[] = err.error.message || err.error.error || err.statusText;
-		if (typeof errMsg === 'string') {
-			messages = [errMsg];
-		}
-		else {
-			messages = errMsg;
-		}
-		this.showErrorMessage(messages);
-	}
+  showErrorMessageForResponse(err: HttpErrorResponse) {
+    let messages: string[] = [];
+    const errMsg: string | string[] =
+      err.error.message ||
+      err.error.error ||
+      err.error.map((err: any) => err.error) ||
+      err.statusText;
+    if (typeof errMsg === 'string') {
+      messages = [errMsg];
+    } else {
+      messages = errMsg;
+    }
+    this.showErrorMessage(messages);
+  }
 }

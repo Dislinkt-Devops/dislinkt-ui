@@ -10,3 +10,4 @@ export * from './post-form';
 export * from './post';
 export * from './comment';
 export * from './reaction';
+export * from './attribute';

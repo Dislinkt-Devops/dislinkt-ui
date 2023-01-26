@@ -9,6 +9,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { PostFormComponent } from './post-form/post-form.component';
+import { EntryModalComponent } from './entry-modal/entry-modal.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { PostFormComponent } from './post-form/post-form.component';
     EditProfileComponent,
     ProfileComponent,
     PostFormComponent,
+    EntryModalComponent,
   ],
   imports: [
     CommonModule,
